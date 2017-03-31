@@ -7,12 +7,14 @@
 ```js
 import { Masonry } from 'react-native-masonry';
 
-//..omit
-	render(
-		<Masonry
-			data=['http://image1.jpg', 'http://image2.jpg', 'http://image3.jpg']
-		/>
-	)
+//...omit
+  render () {
+  	return (
+  	  <Masonry
+        data=['http://image1.jpg', 'http://image2.jpg', 'http://image3.jpg']
+      />
+    )
+   )
 ```
 
 ## Roadmap
