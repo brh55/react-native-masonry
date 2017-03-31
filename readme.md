@@ -9,8 +9,8 @@ import { Masonry } from 'react-native-masonry';
 
 //...omit
   render () {
-  	return (
-  	  <Masonry
+    return (
+      <Masonry
         data=['http://image1.jpg', 'http://image2.jpg', 'http://image3.jpg']
       />
     )
