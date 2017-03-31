@@ -20,7 +20,7 @@ export function __resizeByColumns (imgDimensions, nColumns) {
     const { height, width } = Dimensions.get('window');
 
     const gutterBase = width / 100; // 1% = X px
-    const gutterSize = gutterBase * 2;
+    const gutterSize = gutterBase * 1;
 
     const columnWidths = (width/ nColumns) - gutterSize;
     const divider = imgDimensions.width / columnWidths;

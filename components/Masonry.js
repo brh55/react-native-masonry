@@ -57,10 +57,10 @@ export default class Masonry extends Component {
 }
 
 
-export function __getImages(uris) {
-  return uris.map((uri) => pGetImageSize(uri.url).then((dimensions) => {
+export function __getImages(images) {
+  return images.map((image) => pGetImageSize(image.uri).then((dimensions) => {
     return {
-      uri: uri.url,
+      uri: image.uri,
       dimensions: {
         width: dimensions[0],
         height: dimensions[1]
