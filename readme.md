@@ -10,7 +10,7 @@
     ```
 2. Add an import to the top of your file
     ```js
-    import { Masonry } from 'react-native-masonry';
+    import Masonry from 'react-native-masonry';
     ```
 3. Declare the component in the render method of your component
     ```js
