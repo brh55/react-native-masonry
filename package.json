@@ -2,7 +2,7 @@
   "name": "react-native-masonry",
   "version": "0.0.2",
   "description": "A react-native component for a masonry layout",
-  "main": "index.js",
+  "main": "./components/Masonry.js",
   "scripts": {
     "test": "jest"
   },
