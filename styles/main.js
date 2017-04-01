@@ -12,3 +12,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   }
 });
+
+export default styles;
