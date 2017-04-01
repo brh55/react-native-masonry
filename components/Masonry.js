@@ -1,6 +1,6 @@
 'use strict';
 
-import { ListView } from 'react-native';
+import { ListView, Image } from 'react-native';
 import React, { Component } from 'react';
 import Row from './Row';
 import styles from '../styles/main';
