@@ -5,13 +5,13 @@ import styles from '../styles/main';
 const Row = (props) => {
   // Resize based on columns
   const images = Object.keys(props).map((key) => {
-    const { width, height, gutter } = this.__resizeByColumns(props[key].dimensions, 2);
+    const { width, height, gutter } = __resizeByColumns(props[key].dimensions, 2);
     return { uri: props[key].uri, width, height, gutter };
   });
 
   return (
     <View style={styles.masonry__column}>
-      {this.__renderImages(images)}
+      {__renderImages(images)}
     </View>
   )
 }
@@ -35,7 +35,7 @@ export function __renderImages (images) {
   return images.map((image, index) => {
     // Avoid margins for first element
     const gutter = (index === 0) ? 0 : image.gutter;
-    return (<Image key={image.uri} source={{ uri: image.uri }} resizeMethod="auto" style={{ width: image.width, height: image.height, marginTop: gutter }} />);
+    return (<Image key={image.uri} source={{ uri: image.uri }} resizeMethod='auto' style={{ width: image.width, height: image.height, marginTop: gutter }} />);
   });
 }
 

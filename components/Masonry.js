@@ -47,7 +47,6 @@ export default class Masonry extends Component {
     return (
        <ListView
         contentContainerStyle={ styles.masonry__container }
-        style={{ height: 1000 }}
         dataSource={ this.state.dataSource }
         renderRow={ (data) => <Row {...data} /> }
       />
