@@ -19,7 +19,6 @@ export default class Masonry extends Component {
 
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      fadeAnimation: new Animated.Value(0),
       dataSource: this.ds
     };
 
