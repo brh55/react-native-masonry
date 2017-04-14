@@ -9,8 +9,8 @@ import {
 
 
 test('Resize dimensions per columns', () => {
-  expect(__resizeByColumns({ height: 100, width: 400}, 2)).toEqual({gutter: 15, height: 90, width: 360});
-  expect(__resizeByColumns({ height: 100, width: 400}, 4)).toEqual({gutter: 15, height: 43.125, width: 172.5});
+  expect(__resizeByColumns({ height: 100, width: 400}, 2)).toEqual({gutter: 7.5, height: 91.87499999999999, width: 367.49999999999994});
+  expect(__resizeByColumns({ height: 100, width: 400}, 4)).toEqual({gutter: 7.5, height: 45, width: 180});
 });
 
 test('Render image components', () => {
