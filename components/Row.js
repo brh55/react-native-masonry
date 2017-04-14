@@ -3,10 +3,11 @@ import { Dimensions, View, Image } from 'react-native';
 import styles from '../styles/main';
 
 const Row = (props) => {
+  const data = props.data;
   // Resize based on columns
-  const images = Object.keys(props).map((key) => {
-    const { width, height, gutter } = __resizeByColumns(props[key].dimensions, 2);
-    return { uri: props[key].uri, width, height, gutter };
+  const images = Object.keys(data).map((key) => {
+	   const { width, height, gutter } = __resizeByColumns(data[key].dimensions, props.columns);
+	   return { uri: data[key].uri, width, height, gutter };
   });
 
   return (
@@ -16,7 +17,7 @@ const Row = (props) => {
   )
 }
 
-export function __resizeByColumns (imgDimensions, nColumns) {
+export function __resizeByColumns (imgDimensions, nColumns=2) {
     const { height, width } = Dimensions.get('window');
 
     const gutterBase = width / 100; // 1% = X px
@@ -32,10 +33,16 @@ export function __resizeByColumns (imgDimensions, nColumns) {
 }
 
 export function __renderImages (images) {
-  return images.map((image, index) => {
+    return images.map((image, index) => {
     // Avoid margins for first element
     const gutter = (index === 0) ? 0 : image.gutter;
-    return (<Image key={image.uri} source={{ uri: image.uri }} resizeMethod='auto' style={{ width: image.width, height: image.height, marginTop: gutter }} />);
+    return (
+    	<Image
+    	  key={image.uri}
+    	  source={{ uri: image.uri }}
+    	  resizeMethod='auto'
+    	  style={{ width: image.width, height: image.height, marginTop: gutter }} />
+    );
   });
 }
 
