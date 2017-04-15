@@ -1,12 +1,14 @@
 'use strict';
 import { ListView, Image } from 'react-native';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import Row from './Row';
 import styles from '../styles/main';
 
 export default class Masonry extends Component {
   static propTypes = {
-    images: React.PropTypes.array,
+    images: PropTypes.array,
   };
 
   static defaultProps = {
