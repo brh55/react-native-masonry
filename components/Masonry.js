@@ -23,13 +23,15 @@ export default class Masonry extends Component {
       dataSource: this.ds
     };
 
+    // Once the images are resolved and the dimensions are resolved,
+    // save as a dataSource
     Promise.all(__getImages(props.data))
       .then(fetchedImages => {
         this.state = {
           dataSource: this.ds.cloneWithRows(fetchedImages)
         };
       })
-      .catch(console.log);
+      .catch(console.warn);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,7 +42,7 @@ export default class Masonry extends Component {
         dataSource: this.state.dataSource.cloneWithRows([...images])
       });
     })
-	  .catch(console.log);
+	  .catch(console.warn);
   }
 
   render() {
