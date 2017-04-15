@@ -22,10 +22,17 @@
       ]
     />
     ```
+    
+## Component Props
+
+| Props   | Type  | Description                                                                                                                                                                                                              | Default |
+|---------|-------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| data    | array | A list of objects to be passed into the row renderer. Currently images are the only supported, which requires a property of `uri` for each object. IE:  `data=[{uri: 'https://image.jpg'}, {uri: 'https://hyper.jpg'}]` | N/A     |
+| columns | num   | Desired number of columns                                                                                                                                                                                                | 2       |
 
 ## Roadmap
 - [ ] Support click handlers
-- [ ] Support # columns
+- [X] Support # columns
 - [ ] Accept input of row rendering
 - [ ] Handle fail image loading issues gracefully (improper urls)
 - [ ] Create a demo
