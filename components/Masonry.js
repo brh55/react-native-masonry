@@ -36,30 +36,31 @@ export default class Masonry extends Component {
 
   componentWillReceiveProps(nextProps) {
     Promise.all(__getImages(nextProps.data))
-	  .then(fetchedImages => {
-      const images = __splitIntoColumns(fetchedImages, nextProps.columns);
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows([...images])
-      });
-    })
-	  .catch(console.warn);
+      .then(fetchedImages => {
+	const images = __splitIntoColumns(fetchedImages, nextProps.columns);
+	this.setState({
+          dataSource: this.state.dataSource.cloneWithRows([...images])
+	});
+      })
+      .catch(console.warn);
   }
 
   render() {
     return (
-       <ListView
-        contentContainerStyle={ styles.masonry__container }
-        dataSource={ this.state.dataSource }
-        renderRow={ (data) => (<Row data={data} columns={this.props.columns} />) }
+	<ListView
+         contentContainerStyle={ styles.masonry__container }
+         dataSource={ this.state.dataSource }
+         renderRow={ (data) => (<Row data={data} columns={this.props.columns} />) }
       />
     )
   }
 }
 
+// A -> A
 export function __getImages(images) {
   return images.map((image) => pGetImageSize(image.uri).then((dimensions) => {
     return {
-      uri: image.uri,
+      ...image,
       dimensions: {
         width: dimensions[0],
         height: dimensions[1]
@@ -68,6 +69,7 @@ export function __getImages(images) {
   }));
 }
 
+// A, B -> A
 export function __splitIntoColumns(data, nColumns = 2) {
   const dataSet = [];
   for (let i = 0; i < data.length; i++) {
@@ -81,6 +83,7 @@ export function __splitIntoColumns(data, nColumns = 2) {
   return dataSet;
 }
 
+// A -> Promise -> A
 function pGetImageSize(uri) {
   return new Promise((resolve, reject) => {
     Image.getSize(uri, (width, height) => resolve([width, height]), (err) => reject(err));
