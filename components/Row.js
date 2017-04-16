@@ -7,13 +7,19 @@ const Row = (props) => {
   const data = props.data;
   // Resize based on columns
   const images = Object.keys(data).map((key) => {
-    const { width, height, gutter } = __resizeByColumns(data[key].dimensions, props.columns);
-    return { uri: data[key].uri, width, height, gutter };
+    const image = data[key];
+    const column = __resizeByColumns(data[key].dimensions, props.columns);
+    // Return a image object that width will be equivilent to
+    // the column dimension, while retaining original image properties
+    return {
+      ...image,
+      ...column
+    };
   });
 
   return (
     <View style={styles.masonry__column}>
-      {__renderImages(images)}
+      {__renderBricks(images)}
     </View>
   )
 }
@@ -40,13 +46,13 @@ export function __renderBricks (images) {
   return images.map((image, index) => {
     // Avoid margins for first element
     const gutter = (index === 0) ? 0 : image.gutter;
-    const brick = (image.onPress) ? __getTouchableUnit(image) : __getImageTag(image);
+    const brick = (image.onPress) ? __getTouchableUnit(image, gutter) : __getImageTag(image, gutter);
     return brick;
   });
 }           
 
 // A -> B
-export function __getImageTag (image) {
+export function __getImageTag (image, gutter) {
   return (
       <Image
         key={image.uri}
@@ -57,11 +63,11 @@ export function __getImageTag (image) {
 }
 
 // A -> B
-export function __getTouchableUnit (image) {
+export function __getTouchableUnit (image, gutter) {
   return (
       <TouchableHighlight
         onPress={image.onPress}>
-          { __getImageTag(image) }
+      { __getImageTag(image, gutter) }
       </TouchableHighlight>
   )
 }
