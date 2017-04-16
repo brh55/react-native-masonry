@@ -40,7 +40,7 @@ export function __resizeByColumns (imgDimensions, nColumns=2) {
   return { width: newWidth, height: newHeight, gutter: gutterSize };
 }
 
-// Renders the bricks within the columns
+// Renders the "bricks" within the columns
 // A -> B
 export function __renderBricks (images) {
   return images.map((image, index) => {
