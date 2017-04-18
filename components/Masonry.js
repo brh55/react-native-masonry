@@ -1,5 +1,3 @@
-'use strict';
-
 import { View, ListView, Image, Dimensions } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -38,7 +36,7 @@ export default class Masonry extends Component {
   }
 
 
-  __updateRows() {
+  __updateImageSizing () {
     const currentDims = Dimensions.get('window');
     const rotation = this.state.dimensions.width !== currentDims.width || this.state.dimensions.height !== currentDims.height;
     if (rotation) {
@@ -63,10 +61,10 @@ export default class Masonry extends Component {
   }
 
   render() {
-    // Wrap the ListView with a View to perform and update row for rotation
     return (
-	<View onLayout={this.__updateRows.bind(this)}>
-	<ListView
+	<View
+          onLayout={this.__updateImageSizing.bind(this)}>
+   	<ListView
          contentContainerStyle={ styles.masonry__container }
          dataSource={ this.state.dataSource }
          renderRow={ (data) => (<Row data={data} columns={this.props.columns} dims={this.state.dimensions} />) } />
