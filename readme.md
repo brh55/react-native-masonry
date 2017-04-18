@@ -15,7 +15,7 @@
 3. Declare the component in the render method of your component
     ```js
     <Masonry
-      data=[
+      bricks=[
         { uri: 'http://image1.jpg' },
         { uri: 'http://image2.jpg' },
         { uri: 'http://image3.jpg' }
@@ -25,13 +25,28 @@
     
 ## Component Props
 
-| Props   | Type  | Description                                                                                                                                                                                                              | Default |
-|---------|-------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| data    | array | A list of objects to be passed into the row renderer. Currently images are the only supported, which requires a property of `uri` for each object. IE:  `data=[{uri: 'https://image.jpg'}, {uri: 'https://hyper.jpg'}]` | N/A     |
-| columns | num   | Desired number of columns                                                                                                                                                                                                | 2       |
+| Props   | Type                     | Description                                                                                                                                                                                                                                                                                 | Default |
+|---------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. IE:,`data=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | N/A     |
+| columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
+
+### Brick Properties
+"Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column. The following properties are available:
+
+#### brick.uri | **Required**
+##### Type: `String`
+The uri of the image location.
+
+IE: `uri: 'http://cats.com/cat1.jpeg'`
+
+#### brick.onPress
+##### Type: `Func (brick)`
+A function handler when the brick is pressed. The function will be called with the instance of the brick, which provides it's dimensions, columns, as well as any user defined properties passed into the `bricks` prop. An image will be wrapped by a "TouchableHighlight".
+
+IE: `onPress: (brick) => goTo(brick.id)`
 
 ## Roadmap
-- [ ] Support click handlers
+- [X] Support click handlers
 - [X] Support # columns
 - [ ] Accept input of row rendering
 - [ ] Handle fail image loading issues gracefully (improper urls)
