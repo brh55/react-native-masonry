@@ -1,29 +1,50 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Dimensions, View, Image, TouchableHighlight } from 'react-native';
 import styles from '../styles/main';
 
 // Takes props and returns a masonry column
-const Row = (props) => {
-  const data = props.data;
-  // Resize based on columns
-  const images = Object.keys(data).map((key) => {
-    const image = data[key];
-    const column = __resizeByColumns(data[key].dimensions, props.columns);
-    // Return a image object that width will be equivilent to
-    // the column dimension, while retaining original image properties
-    return {
-      ...image,
-      ...column
-    };
-  });
+export default class Row extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <View style={styles.masonry__column}>
-      {__renderBricks(images)}
-    </View>
-  )
+    const data = this.props.data;
+    this.state = {
+      images:  __resizeImages(data, this.props.columns),
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+     this.setState({
+	images: __resizeImages(nextProps.data, nextProps.columns)
+      });
+  }
+  
+  render() {
+    return (
+	<View
+          style={styles.masonry__column}>
+             {__renderBricks(this.state.images)}
+        </View>
+    )
+  }
 }
 
+// Transforms an array of images with dimensions scaled according to the
+// column it is within
+// A, B -> A
+export function __resizeImages (data, nColumns) {
+  return Object.keys(data).map((key) => {
+      const image = data[key];
+      const imageSizedForColumn = __resizeByColumns(data[key].dimensions, nColumns);
+      // Return a image object that width will be equivilent to
+      // the column dimension, while retaining original image properties
+      return {
+	...image,
+	...imageSizedForColumn
+      };
+    });
+}
+// Resize image while maintain aspect ratio
 // A, B -> A
 export function __resizeByColumns (imgDimensions, nColumns=2) {
   const { height, width } = Dimensions.get('window');
@@ -72,4 +93,3 @@ export function __getTouchableUnit (image, gutter) {
   )
 }
 
-export default Row;

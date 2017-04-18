@@ -1,5 +1,6 @@
 'use strict';
-import { ListView, Image } from 'react-native';
+
+import { View, ListView, Image, Dimensions } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -12,33 +13,49 @@ export default class Masonry extends Component {
   };
 
   static defaultProps = {
-      images: [],
-      columns: 2
+    images: [],
+    columns: 2
   };
 
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: this.ds
+      dataSource: this.ds,
+      dimensions: Dimensions.get('window')
     };
 
     // Once the images are resolved and the dimensions are resolved,
     // save as a dataSource
     Promise.all(__getImages(props.data))
       .then(fetchedImages => {
-        this.state = {
-          dataSource: this.ds.cloneWithRows(fetchedImages)
-        };
+        this.setState({
+	  ...this.state,
+	  dataSource: this.ds.cloneWithRows(fetchedImages)
+        });
       })
       .catch(console.warn);
   }
+
+
+  __updateRows() {
+    const currentDims = Dimensions.get('window');
+    const rotation = this.state.dimensions.width !== currentDims.width || this.state.dimensions.height !== currentDims.height;
+    if (rotation) {
+      this.setState({
+	...this.state,
+	dimensions: currentDims
+      });
+    }
+  }
+    
 
   componentWillReceiveProps(nextProps) {
     Promise.all(__getImages(nextProps.data))
       .then(fetchedImages => {
 	const images = __splitIntoColumns(fetchedImages, nextProps.columns);
 	this.setState({
+	  ...this.state,
           dataSource: this.state.dataSource.cloneWithRows([...images])
 	});
       })
@@ -46,12 +63,14 @@ export default class Masonry extends Component {
   }
 
   render() {
+    // Wrap the ListView with a View to perform and update row for rotation
     return (
+	<View onLayout={this.__updateRows.bind(this)}>
 	<ListView
          contentContainerStyle={ styles.masonry__container }
          dataSource={ this.state.dataSource }
-         renderRow={ (data) => (<Row data={data} columns={this.props.columns} />) }
-      />
+         renderRow={ (data) => (<Row data={data} columns={this.props.columns} dims={this.state.dimensions} />) } />
+	</View>
     )
   }
 }
