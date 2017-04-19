@@ -7,11 +7,12 @@ import styles from '../styles/main';
 
 export default class Masonry extends Component {
   static propTypes = {
-    images: PropTypes.array,
+    bricks: PropTypes.array,
+    columns: PropTypes.number
   };
 
   static defaultProps = {
-    images: [],
+    bricks: [],
     columns: 2
   };
 
@@ -25,7 +26,7 @@ export default class Masonry extends Component {
 
     // Once the images are resolved and the dimensions are resolved,
     // save as a dataSource
-    Promise.all(__getImages(props.data))
+    Promise.all(__getImages(props.bricks))
       .then(fetchedImages => {
         this.setState({
 	  ...this.state,

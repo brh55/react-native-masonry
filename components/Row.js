@@ -6,10 +6,8 @@ import styles from '../styles/main';
 export default class Row extends Component {
   constructor(props) {
     super(props);
-
-    const data = this.props.data;
     this.state = {
-      images:  __resizeImages(data, this.props.columns),
+      images:  __resizeImages(this.props.data, this.props.columns),
     };
   }
 
