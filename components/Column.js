@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Dimensions, View, Image, Text, TouchableHighlight } from 'react-native';
-import styles from 'styles/main';
+import styles from '../styles/main';
 
 // Takes props and returns a masonry column
 export default class Column extends Component {
@@ -13,10 +13,13 @@ export default class Column extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('hiii');
+     this.setState({
+	images: __resizeImages(nextProps.data, nextProps.columns)
+      });
   }
 
   render() {
+    console.log('RENDERING column');
     return (
 	<View
           style={styles.masonry__column}>

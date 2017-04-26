@@ -1,9 +1,17 @@
-import { View, ListView, Image, Dimensions } from 'react-native';
+import { View, ListView, Image, Text, Dimensions } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Task from 'data.task';
+import { curry, compose } from 'ramda';
 
-import Row from './Row';
+import { resolveImage } from './model';
+import Column from './Column';
 import styles from '../styles/main';
+
+// addIndex :: Number -> Object -> Object
+// const addColumx = curry((index, targetObject) => ({ index, ...targetObject }))
+// assignObjectColumns :: Number -> [Objects] -> [Objects]
+const assignObjectColumns = (nColumns, index, targetObject) => ({ ...{ column: index % nColumns }, ...targetObject});
 
 export default class Masonry extends Component {
   static propTypes = {
@@ -17,93 +25,100 @@ export default class Masonry extends Component {
   };
 
   constructor(props) {
+    console.log(props)
+    console.log('Loading');
     super(props);
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       dataSource: this.ds,
       dimensions: Dimensions.get('window')
     };
-
-    // Once the images are resolved and the dimensions are resolved,
-    // save as a dataSource
-    Promise.all(__getImages(props.bricks))
-      .then(fetchedImages => {
-        this.setState({
-	  ...this.state,
-	  dataSource: this.ds.cloneWithRows(fetchedImages)
-        });
-      })
-      .catch(console.warn);
+    this._data = [];
   }
 
+  componentDidMount() {
+    console.log(this.props)
+    this.props.bricks
+      .map((brick, index) => assignObjectColumns(this.props.columns, index, brick))
+      .map(brick => resolveImage(brick))
+      .map(task => task.fork(
+	(err) => console.log('Image failed'),
+	(resolveBrick) => {
+	  const columnIndex = resolveBrick.column;
+	  const column = this._data[columnIndex];
+	  if (column) {
+	    this._data[columnIndex] = [...column, resolveBrick];
+	  } else {
+	    this._data = [...this._data, [resolveBrick]];
+	  }
 
-  __updateImageSizing () {
-    const currentDims = Dimensions.get('window');
-    const rotation = this.state.dimensions.width !== currentDims.width || this.state.dimensions.height !== currentDims.height;
-    if (rotation) {
-      this.setState({
-	...this.state,
-	dimensions: currentDims
-      });
-    }
+	  this.setState({
+	    dataSource: this.state.dataSource.cloneWithRows(this._data)
+	  });
+	}));
   }
-    
-
-  componentWillReceiveProps(nextProps) {
-    Promise.all(__getImages(nextProps.data))
-      .then(fetchedImages => {
-	const images = __splitIntoColumns(fetchedImages, nextProps.columns);
-	this.setState({
-	  ...this.state,
-          dataSource: this.state.dataSource.cloneWithRows([...images])
-	});
-      })
-      .catch(console.warn);
-  }
+    //    fetchImages(errorHandler, successHandler, props.bricks);
+//    Promise.all(__getImages(props.bricks))
+//      .then(fetchedImages => {
+//        this.setState({
+//	  ...this.state,
+//	  dataSource: this.ds.cloneWithRows(fetchedImages)
+  //      });
+    //  })
+    //      .catch(console.warn); 
 
   render() {
     return (
-	<View
-          onLayout={this.__updateImageSizing.bind(this)}>
+  	<View>
    	<ListView
-         contentContainerStyle={ styles.masonry__container }
-         dataSource={ this.state.dataSource }
-         renderRow={ (data) => (<Row data={data} columns={this.props.columns} dims={this.state.dimensions} />) } />
-	</View>
-    )
+      contentContainerStyle={ styles.masonry__container }
+      dataSource={ this.state.dataSource }
+      renderRow={ (data) => <Column data={data} columns={this.props.columns} dims={this.state.dimensions} /> } />
+  	</View>
+    )    
   }
+
+  // __updateImageSizing
+  // __updateImageSizing () {
+  //   const currentDims = Dimensions.get('window');
+  //   const rotation = this.state.dimensions.width !== currentDims.width || this.state.dimensions.height !== currentDims.height;
+  //   if (rotation) {
+  //     this.setState({
+  // 	...this.state,
+  // 	dimensions: currentDims
+  //     });
+  //   }
+  // }
+    
+  // componentWillReceiveProps(nextProps) {
+  //   Promise.all(__getImages(nextProps.data))
+  //     .then(fetchedImages => {
+  // 	// fetchAndSplitImages :: 
+  // 	const fetchAndSplitImages = _.compose(_splitSet(nextProps.columns), fetchImages);
+  // 	this.setState({
+  // 	  ...this.state,
+  //         dataSource: this.state.dataSource.cloneWithRows([...images])
+  // 	});
+  //     })
+  //     .catch(console.warn);
+  // }
 }
 
-// A -> A
-export function __getImages(images) {
-  return images.map((image) => pGetImageSize(image.uri).then((dimensions) => {
-    return {
-      ...image,
-      dimensions: {
-        width: dimensions[0],
-        height: dimensions[1]
-      }
-    };
-  }));
-}
+// _updateState :: Component -> Data -> Component
+//export const _updateState = _.curry((component, data) => console.log(data));
 
-// A, B -> A
-export function __splitIntoColumns(data, nColumns = 2) {
-  const dataSet = [];
-  for (let i = 0; i < data.length; i++) {
-    const index = i % nColumns;
-    if (dataSet[index]) {
-      dataSet[index].push(data[i]);
-    } else {
-      dataSet.push([data[i]]);
-    }
-  }
-  return dataSet;
-}
+// _splitSets :: Number -> [B] -> [B]
+// export const _splitSet = _.curry((data, nSets) => {
+//   const splittedSet = [];
 
-// A -> Promise -> A
-function pGetImageSize(uri) {
-  return new Promise((resolve, reject) => {
-    Image.getSize(uri, (width, height) => resolve([width, height]), (err) => reject(err));
-  });
-}
+//   for (let i = 0; i < data.length; i++) {
+//     const index = i % nColumns;
+//     if (dataSet[index]) {
+//       dataSet[index].push(data[i]);
+//     } else {
+//       dataSet.push([data[i]]);
+//     }
+//   }
+//   return dataSet;
+// });
+
