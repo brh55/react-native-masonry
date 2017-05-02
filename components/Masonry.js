@@ -33,9 +33,12 @@ export default class Masonry extends Component {
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
     this.state = {
       dataSource: this.ds,
-      dimensions: Dimensions.get('window')
+      dimensions: Dimensions.get('window'),
+      initialOrientation: true
     };
     this._data = [];
+    // Manage rotations
+    Dimensions.addEventListener('change', (window) => this.setState(state => ({ initialOrientation: !state.initialOrientation })))
   }
 
   componentWillReceiveProps(nextProps) {
