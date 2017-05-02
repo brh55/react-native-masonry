@@ -45,16 +45,11 @@ A function handler when the brick is pressed. The function will be called with t
 
 IE: `onPress: (brick) => goTo(brick.id)`
 
-## Roadmap
-
-- [X] Support click handlers
-- [X] Support # columns
-- [ ] Accept input of row rendering
-- [ ] Handle fail image loading issues gracefully (improper urls)
-- [ ] Create a demo
-
 ## Contribute
-I'm still new to `react`, and `react-native`, and this project is in the works. So PR's are welcomed, just abide by rules listed within [contributing.json](http://github.com/brh55/contributing.json).
+PR's are welcomed, just abide by rules listed within [contributing.json](http://github.com/brh55/react-native-masonry/contributing.json).
+
+### Beginners
+Not sure where to start, or a beginner? No problemo! Take a look at the [issues page](https://github.com/brh55/react-native-masonry/issues) for `low-hanging` or `beginner-friendly` labels as an easy ways to start contributing.Beginners
 
 ## License
 MIT © [Brandon Him](https://github.com/brh55/react-native-masonry)
