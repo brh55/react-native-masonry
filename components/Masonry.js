@@ -70,7 +70,7 @@ export default class Masonry extends Component {
  	  <ListView
              contentContainerStyle={styles.masonry__container}
              dataSource={this.state.dataSource}
-             renderRow={(data) => <Column data={data} columns={this.props.columns} dims={this.state.dimensions} /> }
+             renderRow={(data) => <Column data={data} columns={this.props.columns} /> }
            />
   	</View>
     )    

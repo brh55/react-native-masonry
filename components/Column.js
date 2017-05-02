@@ -78,7 +78,7 @@ export function _getImageTag (image, gutter) {
         source={{ uri: image.uri }}
         resizeMethod='auto'
         style={{ width: image.width, height: image.height, marginTop: gutter }} />
-  )
+  );
 }
 
 // _getTouchableUnit :: Image, Gutter -> TouchableTag
@@ -88,6 +88,6 @@ export function _getTouchableUnit (image, gutter) {
          onPress={() => image.onPress(image)}>
             { _getImageTag(image, gutter) }
       </TouchableHighlight>
-  )
+  );
 }
 
