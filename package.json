@@ -31,6 +31,7 @@
   "dependencies": {
     "barely-functional": "^2.0.0",
     "data.task": "^3.1.1",
+    "lodash.isequal": "^4.5.0",
     "prop-types": "^15.5.8",
     "ramda": "^0.23.0"
   },
@@ -41,6 +42,7 @@
   "devDependencies": {
     "babel-preset-react-native": "^1.9.1",
     "jest": "^19.0.2",
+    "lodash.isequalwith": "^4.4.0",
     "react": "^15.5.0",
     "react-native": "^0.42.3"
   },

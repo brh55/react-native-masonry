@@ -6,9 +6,8 @@ import styles from '../styles/main';
 export default class Column extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
-      images:  __resizeImages(this.props.data, this.props.columns),
+      images: __resizeImages(this.props.data, this.props.columns),
     };
   }
 
@@ -19,11 +18,10 @@ export default class Column extends Component {
   }
 
   render() {
-    console.log('RENDERING column');
     return (
 	<View
           style={styles.masonry__column}>
-	{__renderBricks(this.state.images)}  
+	  {__renderBricks(this.state.images)}  
         </View>
     )
   }
@@ -31,7 +29,7 @@ export default class Column extends Component {
 
 // Transforms an array of images with dimensions scaled according to the
 // column it is within
-// __resizeImages :: A, B -> A
+// __resizeImages :: Data, nColumns -> ResizedImage
 export function __resizeImages (data, nColumns) {
   return Object.keys(data).map((key) => {
     const image = data[key];
@@ -45,7 +43,7 @@ export function __resizeImages (data, nColumns) {
     });
 }
 // Resize image while maintain aspect ratio
-// __resizeByColumns :: A, B -> A
+// __resizeByColumns :: ImgDimensions , nColumns -> AdjustedDimensions
 export function __resizeByColumns (imgDimensions, nColumns=2) {
   const { height, width } = Dimensions.get('window');
 
@@ -62,7 +60,7 @@ export function __resizeByColumns (imgDimensions, nColumns=2) {
 }
 
 // Renders the "bricks" within the columns
-// __renderBricks :: A -> B
+// __renderBricks :: [images] -> [TouchableTag || ImageTag...]
 export function __renderBricks (images) {
   return images.map((image, index) => {
     // Avoid margins for first element
@@ -72,7 +70,7 @@ export function __renderBricks (images) {
   });
 }           
 
-// __getImageTag :: A -> B
+// __getImageTag :: Image, Gutter -> ImageTag
 export function __getImageTag (image, gutter) {
   return (
       <Image
@@ -83,12 +81,12 @@ export function __getImageTag (image, gutter) {
   )
 }
 
-// __getTouchableUnit :: A -> B
+// __getTouchableUnit :: Image, Gutter -> TouchableTag
 export function __getTouchableUnit (image, gutter) {
   return (
       <TouchableHighlight
-    onPress={() => image.onPress(image)}>
-      { __getImageTag(image, gutter) }
+         onPress={() => image.onPress(image)}>
+            { __getImageTag(image, gutter) }
       </TouchableHighlight>
   )
 }

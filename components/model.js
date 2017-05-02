@@ -11,11 +11,3 @@ export const resolveImage = (data) => {
     }
   }), (err) => reject(err)));
 };
-
-// buildImageTask :: [Sources] -> [Task]
-// const buildImageTask = map(source => _resolveImage(source));
-
-// fetchImages :: [Sources] -> [Task]
-// export default const fetchImage = compose(map(task => task.fork(imageFail, pass)), buildImageTask, assignObjectColumns(props.columns));
-// const fetchImage = compose(
-
