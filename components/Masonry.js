@@ -2,7 +2,7 @@ import { View, ListView, Image, Text, Dimensions } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Task from 'data.task';
-import isEqual from 'lodash.isequal';
+// import isEqual from 'lodash.isequal';
 
 import { resolveImage } from './model';
 import Column from './Column';
@@ -37,7 +37,7 @@ export default class Masonry extends Component {
       initialOrientation: true
     };
     this._data = [];
-    // Manage rotations
+    // Assuming that rotation is binary (vertical|landscape)
     Dimensions.addEventListener('change', (window) => this.setState(state => ({ initialOrientation: !state.initialOrientation })))
   }
 

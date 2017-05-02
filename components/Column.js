@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, View, Image, Text, TouchableHighlight } from 'react-native';
+import { Dimensions, View, Image, TouchableHighlight } from 'react-native';
 import styles from '../styles/main';
 
 // Takes props and returns a masonry column
@@ -71,7 +71,7 @@ export function _renderBricks (images) {
 }           
 
 // _getImageTag :: Image, Gutter -> ImageTag
-export function _getImageTag (image, gutter) {
+export function _getImageTag (image, gutter = 0) {
   return (
       <Image
         key={image.uri}
@@ -81,8 +81,8 @@ export function _getImageTag (image, gutter) {
   );
 }
 
-// _getTouchableUnit :: Image, Gutter -> TouchableTag
-export function _getTouchableUnit (image, gutter) {
+// _getTouchableUnit :: Image, Number -> TouchableTag
+export function _getTouchableUnit (image, gutter = 0) {
   return (
       <TouchableHighlight
          onPress={() => image.onPress(image)}>
