@@ -1,7 +1,7 @@
-# react-native-masonry [![Travis](https://img.shields.io/travis/brh55/react-native-masonry.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry)
-> A react-native component to render a masonry layout for local or remote images. Currently in the stages of development.
+# react-native-masonry   [![Travis](https://img.shields.io/travis/brh55/react-native-masonry.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry)
+> :raised_hands: A easy to use react-native component to render a masonry~ish layout for local and remote images with support for dynamic column rendering, progressive image loading, device rotation, and on-press handlers.
 
-![screen-shot-2017-03-31-at-11-3](https://cloud.githubusercontent.com/assets/6020066/24564115/a48c07a0-1605-11e7-964d-2293a4b72ee6.png)
+![v0.1.0 Demo](http://g.recordit.co/n4D5WW0Y6U.gif)
 
 ## Usage
 1. Install the repository
@@ -12,7 +12,7 @@
     ```js
     import Masonry from 'react-native-masonry';
     ```
-3. Declare the component in the render method of your component
+3. At a minimal, declare the component in the render method prividing data for bricks
     ```js
     <Masonry
       bricks=[
@@ -22,12 +22,13 @@
       ]
     />
     ```
+4. Still a bit confused? No worries, run the [example application](/tree/master/example) on your local machine to examine how to get started.
     
 ## Component Props
 
 | Props   | Type                     | Description                                                                                                                                                                                                                                                                                 | Default |
 |---------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. IE:,`data=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | N/A     |
+| bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. IE:,`data=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | []     |
 | columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
 
 ### Brick Properties
@@ -45,16 +46,11 @@ A function handler when the brick is pressed. The function will be called with t
 
 IE: `onPress: (brick) => goTo(brick.id)`
 
-## Roadmap
-
-- [X] Support click handlers
-- [X] Support # columns
-- [ ] Accept input of row rendering
-- [ ] Handle fail image loading issues gracefully (improper urls)
-- [ ] Create a demo
-
 ## Contribute
-I'm still new to `react`, and `react-native`, and this project is in the works. So PR's are welcomed, just abide by rules listed within [contributing.json](http://github.com/brh55/contributing.json).
+:octocat: PR's are welcomed, just abide by rules listed within [contributing.json](http://github.com/brh55/react-native-masonry/contributing.json).
+
+### Beginners
+Not sure where to start, or a beginner? No problemo! Take a look at the [issues page](https://github.com/brh55/react-native-masonry/issues) for `low-hanging` or `beginner-friendly` labels as an easy ways to start contributing.
 
 ## License
 MIT © [Brandon Him](https://github.com/brh55/react-native-masonry)
