@@ -52,6 +52,7 @@ test('PRIVATE FUNC: Renders touchable tag properly', () => {
   const imageTag = _getTouchableUnit(mock[0], 9);
   expect(JSON.stringify(imageTag)).toEqual(JSON.stringify(
       <TouchableHighlight
+         key={mock[0].uri}
          onPress={() => mock[0].onPress(mock[0])}>
       { _getImageTag(mock[0], 9) }
     </TouchableHighlight>));
