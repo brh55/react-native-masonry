@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class masonryExample extends Component {
+export default class example extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('masonryExample', () => masonryExample);
+AppRegistry.registerComponent('example', () => example);

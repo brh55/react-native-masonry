@@ -1,4 +1,4 @@
-package com.masonryexample;
+package com.example;
 
 import android.app.Application;
 
