@@ -85,6 +85,7 @@ export function _getImageTag (image, gutter = 0) {
 export function _getTouchableUnit (image, gutter = 0) {
   return (
       <TouchableHighlight
+         key={image.uri}
          onPress={() => image.onPress(image)}>
             { _getImageTag(image, gutter) }
       </TouchableHighlight>
