@@ -39,10 +39,11 @@
   },
   "devDependencies": {
     "babel-preset-react-native": "^1.9.1",
+    "babel-jest": "^19.0.0",
     "jest": "^19.0.2",
     "jest-react-native": "^18.0.0",
     "react": "16.0.0-alpha.6",
-    "react-native": "^0.43.3",
+    "react-native": "^0.43.4",
     "react-test-renderer": "^15.5.4"
   },
   "jest": {
