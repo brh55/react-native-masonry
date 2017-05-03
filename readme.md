@@ -1,4 +1,4 @@
-# react-native-masonry [![Travis](https://img.shields.io/travis/brh55/react-native-masonry.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry)
+# react-native-masonry   [![Travis](https://img.shields.io/travis/brh55/react-native-masonry.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry)
 > :raised_hands: A easy to use react-native component to render a masonry~ish layout for local and remote images with support for dynamic column rendering, progressive image loading, device rotation, and on-press handlers.
 
 ![v0.1.0 Demo](http://g.recordit.co/n4D5WW0Y6U.gif)
@@ -28,7 +28,7 @@
 
 | Props   | Type                     | Description                                                                                                                                                                                                                                                                                 | Default |
 |---------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. IE:,`data=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | N/A     |
+| bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. IE:,`data=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | []     |
 | columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
 
 ### Brick Properties
