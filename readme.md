@@ -22,7 +22,7 @@
       ]
     />
     ```
-4. Still a bit confused? No worries, run the [example application](/tree/master/example) on your local machine to examine how to get started.
+4. Still a bit confused :confounded:? No worries, run the [example application](https://github.com/brh55/react-native-masonry/tree/master/example) on your local machine to examine how to get started.
     
 ## Component Props
 
@@ -32,7 +32,7 @@
 | columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
 
 ### Brick Properties
-"Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column. The following properties are available:
+"Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column and require a `uri` property at a minimum. However, you can freely add additional properties if you need access to certain data within your `brick.onPress` handler. The following properties are available:
 
 #### brick.uri | **Required**
 ##### Type: `String`
@@ -42,7 +42,7 @@ IE: `uri: 'http://cats.com/cat1.jpeg'`
 
 #### brick.onPress
 ##### Type: `Func (brick)`
-A function handler when the brick is pressed. The function will be called with the instance of the brick, which provides it's dimensions, columns, as well as any user defined properties passed into the `bricks` prop. An image will be wrapped by a "TouchableHighlight".
+A function handler when the brick is pressed. The function will be called with the instance of the brick, which provides it's dimensions, columns, as well as any user defined properties passed into the `bricks` prop. An image will be wrapped by a [`<TouchableHighlight>`](https://facebook.github.io/react-native/docs/touchablehighlight.html).
 
 IE: `onPress: (brick) => goTo(brick.id)`
 
