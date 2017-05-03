@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SNAPSHOT: All functionality should match prev snapshot 1`] = `
+<View>
+  <RCTScrollView
+    contentContainerStyle={
+      Object {
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "width": "100%",
+      }
+    }
+    dataSource={
+      ListViewDataSource {
+        "items": 0,
+      }
+    }
+    renderRow={[Function]}
+    renderScrollComponent={[Function]}
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;

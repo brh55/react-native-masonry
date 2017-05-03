@@ -1,5 +1,5 @@
 import Masonry from '../components/Masonry';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableHighlight } from 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
@@ -44,12 +44,11 @@ test('MAIN: Render masonry correct', () => {
     });
 });
 
-// Ignore for now, until we can resolve jest issues
-// test('SNAPSHOT: All functionality should match prev snapshot', () => {
-//   const tree = renderer.create(
-//       <Masonry
-//     bricks={brickSet}
-//     columns={3} />
-//   ).toJSON();
-//   expect(tree).toMatchSnapshot();
-// });
+test('SNAPSHOT: All functionality should match prev snapshot', () => {
+  const tree = renderer.create(
+      <Masonry
+    bricks={brickSet}
+    columns={3} />
+  ).toJSON();
+  expect(tree).toMatchSnapshot();
+});
