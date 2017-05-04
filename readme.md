@@ -22,7 +22,7 @@
       ]
     />
     ```
-4. Still a bit confused :confounded:? No worries, run the [example application](https://github.com/brh55/react-native-masonry/tree/master/example) on your local machine to examine how to get started.
+4. Still a bit confused :confounded:, or want to see it in action? No worries, run the [example application](https://github.com/brh55/react-native-masonry/tree/master/example) on your local machine to examine how to get started or try it out on [Expo.io](https://expo.io/@community/masonry-example).
     
 ## Component Props
 
