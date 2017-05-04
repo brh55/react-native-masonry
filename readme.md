@@ -28,7 +28,7 @@
 
 | Props   | Type                     | Description                                                                                                                                                                                                                                                                                 | Default |
 |---------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. IE:,`data=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | []     |
+| bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. I.E:,`bricks=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | []     |
 | columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
 
 ### Brick Properties
