@@ -22,7 +22,7 @@
       ]
     />
     ```
-4. Still a bit confused :confounded:, or want to see it in action? No worries, run the [example application](https://github.com/brh55/react-native-masonry/tree/master/example) on your local machine to examine how to get started or try it out on [Expo.io](https://expo.io/@community/masonry-example).
+4. Still a bit confused :confounded:, or want to see it in action? No worries, run the [example application](example) on your local machine to examine how to get started or try it out on [Expo.io](https://expo.io/@community/masonry-example).
     
 ## Component Props
 
@@ -47,7 +47,7 @@ A function handler when the brick is pressed. The function will be called with t
 IE: `onPress: (brick) => goTo(brick.id)`
 
 ## Contribute
-:octocat: PR's are welcomed, just abide by rules listed within [contributing.json](http://github.com/brh55/react-native-masonry/contributing.json).
+:octocat: PR's are welcomed, just abide by rules listed within [contributing.json](contributing.json).
 
 ### Beginners
 Not sure where to start, or a beginner? No problemo! Take a look at the [issues page](https://github.com/brh55/react-native-masonry/issues) for `low-hanging` or `beginner-friendly` labels as an easy ways to start contributing.
