@@ -48,10 +48,12 @@ export function _resizeImages (data, parentDimensions, nColumns) {
 export function _resizeByColumns (imgDimensions, parentDimensions, nColumns=2) {
   const { height, width } = parentDimensions;
 
-  const gutterBase = width / 100; // 1% of the width = X px
+  // The gutter is 1% of the available view width
+  const gutterBase = width / 100;
   const gutterSize = gutterBase * 1;
 
-  const columnWidths = (width / nColumns) - gutterSize;
+  // Column gutters are shared between right and left image
+  const columnWidths = (width / nColumns) - (gutterSize / 2);
   const divider = imgDimensions.width / columnWidths;
 
   const newWidth = imgDimensions.width / divider;

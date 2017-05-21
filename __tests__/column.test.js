@@ -27,8 +27,10 @@ const mock = [
 ];
 
 test('PRIVATE FUNC: Resize dimensions per columns', () => {
-  expect(_resizeByColumns({ height: 100, width: 400}, 2)).toEqual({gutter: 7.5, height: 91.87499999999999, width: 367.49999999999994});
-  expect(_resizeByColumns({ height: 100, width: 400}, 4)).toEqual({gutter: 7.5, height: 45, width: 180});
+  // gutter 3
+  expect(_resizeByColumns({ height: 100, width: 400}, {width: 300, height: 300}, 3)).toEqual({gutter: 3, height: 24.625, width: 98.5});
+  expect(_resizeByColumns({ height: 100, width: 400}, {width: 400, height: 300}, 2)).toEqual({gutter: 4, height: 49.5, width: 198});
+  expect(_resizeByColumns({ height: 100, width: 400}, {width: 700, height: 300}, 4)).toEqual({gutter: 7, height:  42.875, width: 171.5});
 });
 
 test('PRIVATE FUNC: Render bricks properly', () => {
