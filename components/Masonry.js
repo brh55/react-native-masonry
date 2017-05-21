@@ -31,7 +31,7 @@ export default class Masonry extends Component {
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !containMatchingUris(r1, r2) });
     this.state = {
       dataSource: this.ds.cloneWithRows([]),
-      dimensions: Dimensions.get('window'),
+      dimensions: {},
       initialOrientation: true,
       _sortedData: [],
       _resolvedData: []
@@ -48,17 +48,17 @@ export default class Masonry extends Component {
     const sameData = containMatchingUris(this.props.bricks, nextProps.bricks);
     if (sameData) {
       const differentColumns = this.props.columns !== nextProps.columns;
-   
-      if (differentColumns) {
-	const newColumnCount = nextProps.columns;
-	// Re-sort existing data instead of attempting to re-resolved
-	const resortedData = this.state._resolvedData
-	      .map((brick, index) => assignObjectColumns(newColumnCount, index, brick))
-	      .reduce((sortDataAcc, resolvedBrick) => _insertIntoColumn(resolvedBrick, sortDataAcc), []);
 
-	this.setState({
-	  dataSource: this.state.dataSource.cloneWithRows(resortedData)
-	});
+      if (differentColumns) {
+        const newColumnCount = nextProps.columns;
+        // Re-sort existing data instead of attempting to re-resolved
+        const resortedData = this.state._resolvedData
+          .map((brick, index) => assignObjectColumns(newColumnCount, index, brick))
+          .reduce((sortDataAcc, resolvedBrick) => _insertIntoColumn(resolvedBrick, sortDataAcc), []);
+
+      	this.setState({
+      	  dataSource: this.state.dataSource.cloneWithRows(resortedData)
+      	});
       }
     } else {
       this.resolveBricks(nextProps);
@@ -70,32 +70,43 @@ export default class Masonry extends Component {
       .map((brick, index) => assignObjectColumns(columns, index, brick))
       .map(brick => resolveImage(brick))
       .map(resolveTask => resolveTask.fork(
-	(err) => console.warn('Image failed to load'),
-	(resolvedBrick) => {
-	  this.setState(state => {
-	    const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData);
-	    
-	    return {
-	      dataSource: state.dataSource.cloneWithRows(sortedData),
-	      _sortedData: sortedData,
-	      _resolvedData: [...state._resolvedData, resolvedBrick]
-	    }
-	  });;
-	}));
+      	(err) => console.warn('Image failed to load'),
+      	(resolvedBrick) => {
+      	  this.setState(state => {
+      	    const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData);
+
+      	    return {
+      	      dataSource: state.dataSource.cloneWithRows(sortedData),
+      	      _sortedData: sortedData,
+      	      _resolvedData: [...state._resolvedData, resolvedBrick]
+      	    }
+      	  });;
+      	}));
+  }
+
+  _setParentDimensions(event) {
+    // Currently height isn't being utilized, but will pass through for future features
+    const {width, height} = event.nativeEvent.layout;
+    this.setState({
+      dimensions: {
+        width,
+        height
+      }
+    });
   }
 
   render() {
     return (
-  	<View>
- 	  <ListView
-             contentContainerStyle={styles.masonry__container}
-             dataSource={this.state.dataSource}
-             renderRow={(data) => <Column data={data} columns={this.props.columns} /> }
-           />
+  	<View onLayout={(event) => this._setParentDimensions(event)}>
+ 	    <ListView
+         contentContainerStyle={styles.masonry__container}
+         dataSource={this.state.dataSource}
+         renderRow={(data) => <Column data={data} columns={this.props.columns} parentDimensions={this.state.dimensions}/> }
+       />
   	</View>
-    )    
-  }   
-}
+    )
+  }
+};
 
 // Returns a copy of the dataSet with resolvedBrick in correct place
 // (resolvedBrick, dataSetA) -> dataSetB
@@ -113,5 +124,4 @@ export function _insertIntoColumn (resolvedBrick, dataSet) {
   }
 
   return dataCopy;
-}
-
+};

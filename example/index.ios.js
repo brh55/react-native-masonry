@@ -10,10 +10,12 @@ import {
   Text,
   ScrollView,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  Slider
 } from 'react-native';
 import Masonry from 'react-native-masonry';
-//
+
+// list of images
 const data = [
   {
     uri: 'https://s-media-cache-ak0.pinimg.com/736x/32/7f/d9/327fd98ae0146623ca8954884029297b.jpg'
@@ -79,40 +81,54 @@ const data = [
     uri: 'https://img.buzzfeed.com/buzzfeed-static/static/2015-12/30/16/enhanced/webdr04/enhanced-15965-1451509932-6.jpg'
   }
 ];
-  
+
 export default class example extends Component {
   constructor() {
     super();
     this.state = {
-      columns: 2
+      columns: 2,
+      padding: 20
     };
   }
-  
+
   render() {
     return (
-	<ScrollView>
-	   <View style={styles.center}>
-           	<Text style={{ fontWeight: '800', fontSize: 20 }}>Masonry Demo</Text>
-           </View>
-     	<View style={[styles.center, { marginTop: 10, marginBottom: 25 }]}>
-	     <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 2 })}>
-	         <Text>2 Column</Text>
-	      </TouchableHighlight>
-	      <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 3 })}>
-	         <Text>3 Columns</Text>
-              </TouchableHighlight>
-              <TouchableHighlight  style={styles.button} onPress={() => this.setState({ columns: 6 })}>
-	         <Text>6 Columns</Text>
-	     </TouchableHighlight>
-	     <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 9 })}>
-	         <Text>9 Columns</Text>
-	      </TouchableHighlight>
-           </View>
-	   <View style={{height: '100%'}}>
-	     <Masonry
-                bricks={data}
-                columns={this.state.columns}/>
-	   </View>
+      <ScrollView>
+        <View style={styles.center}>
+          <Text style={{ fontWeight: '800', fontSize: 20 }}>Masonry Demo</Text>
+        </View>
+        <View style={[styles.center, { marginTop: 10, marginBottom: 25 }]}>
+          <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 2 })}>
+            <Text>2 Column</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 3 })}>
+            <Text>3 Columns</Text>
+          </TouchableHighlight>
+          <TouchableHighlight  style={styles.button} onPress={() => this.setState({ columns: 6 })}>
+            <Text>6 Columns</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 9 })}>
+            <Text>9 Columns</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={[styles.center, { marginTop: 10, marginBottom: 25, flexDirection: 'column'}]}>
+          <View style={{paddingLeft: 10}}>
+            <Text>Dynamically adjust padding: {this.state.padding}</Text>
+          </View>
+          <View style={{width: '100%'}}>
+            <Slider
+              style={{height: 10, margin: 10}}
+              maximumValue={40}
+              step={5}
+              value={20}
+              onValueChange={(value) => this.setState({padding: value})} />
+          </View>
+        </View>
+        <View style={{height: '100%', padding: this.state.padding}}>
+          <Masonry
+          bricks={data}
+          columns={this.state.columns}/>
+        </View>
       </ScrollView>
     );
   }

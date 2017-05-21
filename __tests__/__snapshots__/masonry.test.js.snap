@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SNAPSHOT: All functionality should match prev snapshot 1`] = `
-<View>
+<View
+  onLayout={[Function]}
+>
   <RCTScrollView
     contentContainerStyle={
       Object {

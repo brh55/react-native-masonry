@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, View, Image, TouchableHighlight } from 'react-native';
+import { View, Image, TouchableHighlight } from 'react-native';
 import styles from '../styles/main';
 
 // Takes props and returns a masonry column
@@ -7,50 +7,53 @@ export default class Column extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: _resizeImages(this.props.data, this.props.columns),
+      images: _resizeImages(this.props.data, this.props.parentDimensions, this.props.columns)
     };
   }
 
   componentWillReceiveProps(nextProps) {
      this.setState({
-	images: _resizeImages(nextProps.data, nextProps.columns)
+	      images: _resizeImages(nextProps.data, nextProps.parentDimensions, nextProps.columns)
       });
   }
 
   render() {
     return (
-	<View
-          style={styles.masonry__column}>
-	  {_renderBricks(this.state.images)}  
-        </View>
+      <View
+        style={styles.masonry__column}>
+          {_renderBricks(this.state.images)}
+      </View>
     )
   }
 }
 
 // Transforms an array of images with dimensions scaled according to the
 // column it is within
-// _resizeImages :: Data, nColumns -> ResizedImage
-export function _resizeImages (data, nColumns) {
+// _resizeImages :: Data, nColumns, parentDimensions -> ResizedImage
+export function _resizeImages (data, parentDimensions, nColumns) {
   return Object.keys(data).map((key) => {
     const image = data[key];
-      const imageSizedForColumn = _resizeByColumns(data[key].dimensions, nColumns);
+      const imageSizedForColumn =
+        _resizeByColumns(data[key].dimensions, parentDimensions, nColumns);
       // Return a image object that width will be equivilent to
       // the column dimension, while retaining original image properties
       return {
-	...image,
-	...imageSizedForColumn
+	       ...image,
+	       ...imageSizedForColumn
       };
     });
 }
 // Resize image while maintain aspect ratio
-// _resizeByColumns :: ImgDimensions , nColumns -> AdjustedDimensions
-export function _resizeByColumns (imgDimensions, nColumns=2) {
-  const { height, width } = Dimensions.get('window');
+// _resizeByColumns :: ImgDimensions , parentDimensions, nColumns  -> AdjustedDimensions
+export function _resizeByColumns (imgDimensions, parentDimensions, nColumns=2) {
+  const { height, width } = parentDimensions;
 
-  const gutterBase = width / 100; // 1% = X px
+  // The gutter is 1% of the available view width
+  const gutterBase = width / 100;
   const gutterSize = gutterBase * 1;
 
-  const columnWidths = (width / nColumns) - gutterSize;
+  // Column gutters are shared between right and left image
+  const columnWidths = (width / nColumns) - (gutterSize / 2);
   const divider = imgDimensions.width / columnWidths;
 
   const newWidth = imgDimensions.width / divider;
@@ -68,7 +71,7 @@ export function _renderBricks (images) {
     const brick = (image.onPress) ? _getTouchableUnit(image, gutter) : _getImageTag(image, gutter);
     return brick;
   });
-}           
+}
 
 // _getImageTag :: Image, Gutter -> ImageTag
 export function _getImageTag (image, gutter = 0) {
@@ -91,4 +94,3 @@ export function _getTouchableUnit (image, gutter = 0) {
       </TouchableHighlight>
   );
 }
-
