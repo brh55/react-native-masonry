@@ -11,6 +11,7 @@ import {
   ScrollView,
   View,
   TouchableHighlight,
+  Image,
   Slider
 } from 'react-native';
 import Masonry from 'react-native-masonry';
@@ -18,7 +19,28 @@ import Masonry from 'react-native-masonry';
 // list of images
 const data = [
   {
-    uri: 'https://s-media-cache-ak0.pinimg.com/736x/32/7f/d9/327fd98ae0146623ca8954884029297b.jpg'
+    caption: 'Summer Recipies',
+    user: {
+      name: 'Henry'
+    },
+    uri: 'https://s-media-cache-ak0.pinimg.com/736x/32/7f/d9/327fd98ae0146623ca8954884029297b.jpg',
+    renderFooter: (data) => {
+      return (
+        <View style={{backgroundColor: 'white', padding: 5, paddingRight: 9, paddingLeft: 9}}>
+          <Text style={{lineHeight: 20, fontSize: 14}}>{data.caption}</Text>
+        </View>
+      )
+    },
+    renderHeader: (data) => {
+      return (
+        <View style={styles.headerTop}>
+          <Image
+            source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsO3JMW5pmK-pq9g3T-1znMMK8IEELKnasQ6agJANePV7Z0nwp9w' }}
+            style={styles.userPic}/>
+          <Text style={styles.userName}>{data.user.name}</Text>
+        </View>
+      )
+    }
   },
   {
     uri: 'https://s-media-cache-ak0.pinimg.com/736x/b1/21/df/b121df29b41b771d6610dba71834e512.jpg'
@@ -87,13 +109,13 @@ export default class example extends Component {
     super();
     this.state = {
       columns: 2,
-      padding: 20
+      padding: 5
     };
   }
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={{backgroundColor: '#f4f4f4'}}>
         <View style={styles.center}>
           <Text style={{ fontWeight: '800', fontSize: 20 }}>Masonry Demo</Text>
         </View>
@@ -138,7 +160,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#f4f4f4',
     flex: 1
   },
   button: {
@@ -158,5 +180,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center'
+  },
+  headerTop: {
+    flexDirection: 'row',
+    padding: 5,
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+  userPic: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    marginRight: 10
+  },
+  userName: {
+    fontSize: 20
   }
 });
