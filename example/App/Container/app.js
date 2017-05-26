@@ -18,7 +18,14 @@ import Masonry from 'react-native-masonry';
 // list of images
 const data = [
   {
-    uri: 'https://s-media-cache-ak0.pinimg.com/736x/32/7f/d9/327fd98ae0146623ca8954884029297b.jpg'
+    uri: 'https://s-media-cache-ak0.pinimg.com/736x/32/7f/d9/327fd98ae0146623ca8954884029297b.jpg',
+    renderFooter: () => {
+      return (
+        <View>
+          <Text>Hello World</Text>
+        </View>
+      )
+    }
   },
   {
     uri: 'https://s-media-cache-ak0.pinimg.com/736x/b1/21/df/b121df29b41b771d6610dba71834e512.jpg'

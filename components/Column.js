@@ -64,12 +64,21 @@ export function _resizeByColumns (imgDimensions, parentDimensions, nColumns=2) {
 
 // Renders the "bricks" within the columns
 // _renderBricks :: [images] -> [TouchableTag || ImageTag...]
-export function _renderBricks (images) {
-  return images.map((image, index) => {
+export function _renderBricks (bricks) {
+  return bricks.map((brick, index) => {
     // Avoid margins for first element
-    const gutter = (index === 0) ? 0 : image.gutter;
-    const brick = (image.onPress) ? _getTouchableUnit(image, gutter) : _getImageTag(image, gutter);
-    return brick;
+    const gutter = (index === 0) ? 0 : brick.gutter;
+    const image = (brick.onPress) ? _getTouchableUnit(brick, gutter) : _getImageTag(brick, gutter);
+    const footer = (brick.renderFooter) ? brick.renderFooter() : null;
+    const header = (brick.renderHeader) ? brick.renderHeader() : null;
+
+    return (
+      <View style={{ width: image.width }}>
+        {header}
+        {image}
+        {footer}
+      </View>
+    )
   });
 }
 
