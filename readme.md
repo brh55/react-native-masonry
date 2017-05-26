@@ -46,6 +46,48 @@ A function handler when the brick is pressed. The function will be called with t
 
 IE: `onPress: (brick) => goTo(brick.id)`
 
+#### brick.renderHeader
+##### Type: `Func (brick) -> Component`
+Renders a function that is placed **ABOVE** the brick image. `renderHeader` receives the data of the brick itself to allow dynamic content rendering.
+
+###### IE: Brick with renderHeader
+```
+{
+  user: {
+      name: 'Henry',
+      profilePic: 'https://user.jpeg'
+  },
+  uri: 'https://example.com/mainImage.jpeg',
+  renderHeader: (data) => {
+    return (
+      <View>
+          <Image source={{ uri: data.user.profilePic }} style={{ width: 50, height: 50}}>
+          <Text>{data.user.name}</Text>
+      </View>
+    );
+  }
+}
+```
+
+#### brick.renderFooter
+##### Type: `Func (brick) -> Component`
+Renders a function that is placed **BELOW** the brick image. `renderFooter` receives the data of the brick itself to allow dynamic content rendering.
+
+###### IE: Brick with renderFooter
+```
+{
+  caption: 'Summer Recipies'
+  uri: 'https://example.com/mainImage.jpeg',
+  renderFooter: (data) => {
+    return (
+        <View>
+            <Text>{data.caption}</Text>
+        </View>
+    );
+  }
+}
+```
+
 ## Contribute
 :octocat: PR's are welcomed, just abide by rules listed within [contributing.json](contributing.json).
 
