@@ -107,7 +107,7 @@ export default class Masonry extends Component {
              data={data}
              columns={this.props.columns}
              parentDimensions={this.state.dimensions}
-             columnKey={`RN-MASONRY-COLUMN-${rowID}`}/> }
+             key={`RN-MASONRY-COLUMN-${rowID}`}/> }
        />
   	</View>
     )

@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableHighlight } from 'react-native';
 import styles from '../styles/main';
+import PropTypes from 'prop-types';
+import Brick from './Brick';
 
 // Takes props and returns a masonry column
 export default class Column extends Component {
+  static propTypes = {
+    data: PropTypes.array,
+    columns: PropTypes.number,
+    parentDimensions: PropTypes.object,
+    columnKey: PropTypes.string
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -70,19 +79,13 @@ export default class Column extends Component {
   // _renderBricks :: [images] -> [TouchableTag || ImageTag...]
   _renderBricks (bricks) {
     return bricks.map((brick, index) => {
-      // Avoid margins for first element
+      console.log(brick);
       const gutter = (index === 0) ? 0 : brick.gutter;
-      const image = (brick.onPress) ? _getTouchableUnit(brick, gutter) : _getImageTag(brick, gutter);
-      const footer = (brick.renderFooter) ? brick.renderFooter(brick) : null;
-      const header = (brick.renderHeader) ? brick.renderHeader(brick) : null;
 
-      return (
-        <View key={image.uri}>
-          {header}
-          {image}
-          {footer}
-        </View>
-      )
+      // return (
+      //   <Brick
+      //     gutter={gutter} />
+      // )
     });
   }
 
@@ -95,26 +98,4 @@ export default class Column extends Component {
       </View>
     )
   }
-}
-
-// _getImageTag :: Image, Gutter -> ImageTag
-export function _getImageTag (image, gutter = 0) {
-  return (
-      <Image
-        key={image.uri}
-        source={{ uri: image.uri }}
-        resizeMethod='auto'
-        style={{ width: image.width, height: image.height, marginTop: gutter }} />
-  );
-}
-
-// _getTouchableUnit :: Image, Number -> TouchableTag
-export function _getTouchableUnit (image, gutter = 0) {
-  return (
-      <TouchableHighlight
-         key={image.uri}
-         onPress={() => image.onPress(image)}>
-            { _getImageTag(image, gutter) }
-      </TouchableHighlight>
-  );
 }
