@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, TouchableHighlight } from 'react-native';
 
 export default function Brick (props) {
   // Avoid margins for first element
   const image = (props.onPress) ? _getTouchableUnit(props, props.gutter) : _getImageTag(props, props.gutter);
-  const footer = (props.renderFooter) ? props.renderFooter(props) : null;
-  const header = (props.renderHeader) ? props.renderHeader(props) : null;
+  const footer = (props.renderFooter) ? props.renderFooter(props.data) : null;
+  const header = (props.renderHeader) ? props.renderHeader(props.data) : null;
 
   return (
     <View key={props.brickKey}>

@@ -19,21 +19,23 @@ import Masonry from 'react-native-masonry';
 // list of images
 const data = [
   {
-    caption: 'Summer Recipies',
-    user: {
-      name: 'Henry'
+    data: {
+      caption: 'Summer Recipies',
+      user: {
+        name: 'Henry'
+      },
     },
     uri: 'https://s-media-cache-ak0.pinimg.com/736x/32/7f/d9/327fd98ae0146623ca8954884029297b.jpg',
     renderFooter: (data) => {
       return (
-        <View style={{backgroundColor: 'white', padding: 5, paddingRight: 9, paddingLeft: 9}}>
+        <View key='brick-header' style={{backgroundColor: 'white', padding: 5, paddingRight: 9, paddingLeft: 9}}>
           <Text style={{lineHeight: 20, fontSize: 14}}>{data.caption}</Text>
         </View>
       )
     },
     renderHeader: (data) => {
       return (
-        <View style={styles.headerTop}>
+        <View key='brick-footer' style={styles.headerTop}>
           <Image
             source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsO3JMW5pmK-pq9g3T-1znMMK8IEELKnasQ6agJANePV7Z0nwp9w' }}
             style={styles.userPic}/>

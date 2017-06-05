@@ -79,13 +79,14 @@ export default class Column extends Component {
   // _renderBricks :: [images] -> [TouchableTag || ImageTag...]
   _renderBricks (bricks) {
     return bricks.map((brick, index) => {
-      console.log(brick);
       const gutter = (index === 0) ? 0 : brick.gutter;
+      const key = `brick-${brick.uri}-${brick.column}`;
+      const updateBrick = { ...brick, gutter, key };
 
-      // return (
-      //   <Brick
-      //     gutter={gutter} />
-      // )
+      return (
+        <Brick
+          {...updateBrick} />
+      );
     });
   }
 
