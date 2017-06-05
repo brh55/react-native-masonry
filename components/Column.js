@@ -80,7 +80,7 @@ export default class Column extends Component {
   _renderBricks (bricks) {
     return bricks.map((brick, index) => {
       const gutter = (index === 0) ? 0 : brick.gutter;
-      const key = `brick-${brick.uri}-${brick.column}`;
+      const key = `RN-MASONRY-BRICK-${brick.column}-${index}`;
       const updateBrick = { ...brick, gutter, key };
 
       return (
