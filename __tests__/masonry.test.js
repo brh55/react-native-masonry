@@ -30,7 +30,7 @@ const brickSet = [
   }
 ];
 
-test('MAIN: Render masonry correct', () => {
+test('Render masonry correct', () => {
   const masonry = renderer.create(<Masonry bricks={brickSet} columns={3} />).toJSON();
   // First child should the scroll view
   const scrollView = masonry.children[0];
