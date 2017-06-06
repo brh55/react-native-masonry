@@ -6,49 +6,46 @@ import renderer from 'react-test-renderer';
 
 const brickSet = [
   {
-    id: 1,
-    uri: 'https://cat1.jpg'
+    uri: 'https://cat1.jpg',
+    data: {
+      id: 1
+    }
   },
   {
-    id: 2,
-    routeId: 'cat-3',
+    data: {
+      routeId: 'cat-3',
+      id: 2,
+    },
     uri: 'http://test.com/cat3.jpg',
     onPress: (brick) => redirect(brick.routeId)
   },
   {
-    id: 3,
+    data: {
+      id: 3
+    },
     uri: 'http://test.com/cat2.jpg'
   },
   {
-    id: 4,
     uri: 'http://test.com/cat3.jpg'
   }
 ];
 
 test('MAIN: Render masonry correct', () => {
- const masonry = renderer.create(
-  <Masonry
-    bricks={brickSet}
-   columns={3} />).toJSON();
+  const masonry = renderer.create(<Masonry bricks={brickSet} columns={3} />).toJSON();
   // First child should the scroll view
   const scrollView = masonry.children[0];
   expect(scrollView.type).toBe('RCTScrollView');
 
   // Crucial styles for the grid to work
-  expect(scrollView.props.contentContainerStyle).toEqual(
-    {
-      flex: 1,
-      justifyContent: 'space-between',
-      flexDirection: 'row',
-      width: '100%'
-    });
+  expect(scrollView.props.contentContainerStyle).toEqual({
+    flex: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    width: '100%'
+  });
 });
 
 test('SNAPSHOT: All functionality should match prev snapshot', () => {
-  const tree = renderer.create(
-  <Masonry
-    bricks={brickSet}
-    columns={3} />
-  ).toJSON();
+  const tree = renderer.create(<Masonry bricks={brickSet} columns={3} />).toJSON();
   expect(tree).toMatchSnapshot();
 });

@@ -6,9 +6,6 @@ import Column from  '../components/Column';
 
 import mock from './mocks/bricksMock';
 
-// Will need to determine how we can test outcome
-// of mocking state
-//
 // test('PRIVATE FUNC: Render bricks properly', () => {
 //   const bricks = Column._renderBricks(mock);
 //   expect(bricks.length).toBe(2);
