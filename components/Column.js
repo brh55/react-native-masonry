@@ -35,7 +35,7 @@ export default class Column extends Component {
 
   // Transforms an array of images with dimensions scaled according to the
   // column it is within
-  // _resizeImages :: Data, nColumns, parentDimensions -> ResizedImage
+  // _resizeImages :: Data, parentDimensions. nColumns -> ResizedImage
   _resizeImages (data, parentDimensions, nColumns) {
     return Object.keys(data).map((key) => {
       const image = data[key];
@@ -49,6 +49,7 @@ export default class Column extends Component {
         };
       });
   }
+
   // Resize image while maintain aspect ratio
   // _resizeByColumns :: ImgDimensions , parentDimensions, nColumns  -> AdjustedDimensions
   _resizeByColumns (imgDimensions, parentDimensions, nColumns=2) {
@@ -81,11 +82,11 @@ export default class Column extends Component {
     return bricks.map((brick, index) => {
       const gutter = (index === 0) ? 0 : brick.gutter;
       const key = `RN-MASONRY-BRICK-${brick.column}-${index}`;
-      const updateBrick = { ...brick, gutter, key };
+      const props = { ...brick, gutter, key };
 
       return (
         <Brick
-          {...updateBrick} />
+          {...props} />
       );
     });
   }
@@ -94,7 +95,10 @@ export default class Column extends Component {
     return (
       <View
         key={this.props.columnKey}
-        style={[{ width: this.state.columnWidth }, styles.masonry__column ]} >
+        style={[
+          { width: this.state.columnWidth },
+          styles.masonry__column
+        ]}>
           {this._renderBricks(this.state.images)}
       </View>
     )

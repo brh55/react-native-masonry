@@ -1,7 +1,7 @@
-import Masonry from '../components/Masonry';
 import { Text, View, TouchableHighlight } from 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
+import Masonry from '../components/Masonry';
 import renderer from 'react-test-renderer';
 
 const brickSet = [
@@ -46,7 +46,7 @@ test('MAIN: Render masonry correct', () => {
 
 test('SNAPSHOT: All functionality should match prev snapshot', () => {
   const tree = renderer.create(
-      <Masonry
+  <Masonry
     bricks={brickSet}
     columns={3} />
   ).toJSON();
