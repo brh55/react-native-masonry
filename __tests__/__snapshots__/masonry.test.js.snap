@@ -18,6 +18,7 @@ exports[`SNAPSHOT: All functionality should match prev snapshot 1`] = `
         "items": 0,
       }
     }
+    enableEmptySections={true}
     renderRow={[Function]}
     renderScrollComponent={[Function]}
   >

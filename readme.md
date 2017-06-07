@@ -1,7 +1,7 @@
 # react-native-masonry   [![Travis](https://img.shields.io/travis/brh55/react-native-masonry/master.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry)
 > :raised_hands: A easy to use react-native component to render a masonry~ish layout for local and remote images with support for dynamic column rendering, progressive image loading, device rotation, and on-press handlers.
 
-![v0.1.0 Demo](http://g.recordit.co/n4D5WW0Y6U.gif)
+![v0.1.0 Demo](http://g.recordit.co/SLAvTzf9HY.gif)
 
 ## Usage
 1. Install the repository
@@ -23,7 +23,7 @@
     />
     ```
 4. Still a bit confused :confounded:, or want to see it in action? No worries, run the [example application](example) on your local machine to examine how to get started or try it out on [Expo.io](https://expo.io/@community/masonry-example).
-    
+
 ## Component Props
 
 | Props   | Type                     | Description                                                                                                                                                                                                                                                                                 | Default |
@@ -41,10 +41,57 @@ The uri of the image location.
 IE: `uri: 'http://cats.com/cat1.jpeg'`
 
 #### brick.onPress
-##### Type: `Func (brick)`
+##### Type: `Func (brick.data)`
 A function handler when the brick is pressed. The function will be called with the instance of the brick, which provides it's dimensions, columns, as well as any user defined properties passed into the `bricks` prop. An image will be wrapped by a [`<TouchableHighlight>`](https://facebook.github.io/react-native/docs/touchablehighlight.html).
 
-IE: `onPress: (brick) => goTo(brick.id)`
+IE: `onPress: (data) => goTo(data.id)`
+
+#### brick.renderHeader
+##### Type: `Func (brick.data) -> Component`
+Renders a function that is placed **ABOVE** the brick image. `renderHeader` is passed `brick.data` to allow dynamic content rendering.
+
+###### IE: Brick with renderHeader
+```
+{
+  // User defined data
+  data: {
+    user: {
+        name: 'Henry',
+        profilePic: 'https://user.jpeg'
+    }
+  }
+  uri: 'https://example.com/mainImage.jpeg',
+  renderHeader: (data) => {
+    return (
+      <View>
+          <Image source={{ uri: data.user.profilePic }} style={{ width: 50, height: 50}}>
+          <Text>{data.user.name}</Text>
+      </View>
+    );
+  }
+}
+```
+
+#### brick.renderFooter
+##### Type: `Func (brick.data) -> Component`
+Renders a function that is placed **BELOW** the brick image. `renderFooter` is passed `brick.data` to allow dynamic content rendering.
+
+###### IE: Brick with renderFooter
+```
+{
+  data: {
+    caption: 'Summer Recipies'
+  },
+  uri: 'https://example.com/mainImage.jpeg',
+  renderFooter: (data) => {
+    return (
+        <View>
+            <Text>{data.caption}</Text>
+        </View>
+    );
+  }
+}
+```
 
 ## Contribute
 :octocat: PR's are welcomed, just abide by rules listed within [contributing.json](contributing.json).
