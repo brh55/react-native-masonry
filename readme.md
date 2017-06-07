@@ -1,5 +1,5 @@
 # react-native-masonry   [![Travis](https://img.shields.io/travis/brh55/react-native-masonry/master.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry)
-> :raised_hands: A easy to use react-native component to render a masonry~ish layout for local and remote images with support for dynamic column rendering, progressive image loading, device rotation, and on-press handlers.
+> :raised_hands: A easy to use react-native component to render a masonry~ish layout for local and remote images with support for dynamic column rendering, progressive image loading, device rotation, on-press handlers, and headers/captions.
 
 ![v0.1.0 Demo](http://g.recordit.co/SLAvTzf9HY.gif)
 
@@ -32,7 +32,7 @@
 | columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
 
 ### Brick Properties
-"Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column and require a `uri` property at a minimum. However, you can freely add additional properties if you need access to certain data within your `brick.onPress` handler. The following properties are available:
+"Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column and require a `uri` property at a minimum. However, you can freely add additional properties to the `data` property if you need access to certain data within your `brick.onPress` handler and `footer/header` renderer. The following properties are available:
 
 #### brick.uri | **Required**
 ##### Type: `String`
@@ -47,8 +47,8 @@ A function handler when the brick is pressed. The function will be called with t
 IE: `onPress: (data) => goTo(data.id)`
 
 #### brick.renderHeader
-##### Type: `Func (brick.data) -> Component`
-Renders a function that is placed **ABOVE** the brick image. `renderHeader` is passed `brick.data` to allow dynamic content rendering.
+##### Type: `Func (brick.data) -> React Component`
+A function that is executed **ABOVE** the brick image, this function must return a React Component. `renderHeader()` is passed `brick.data` to allow dynamic content rendering of components.
 
 ###### IE: Brick with renderHeader
 ```
@@ -73,8 +73,8 @@ Renders a function that is placed **ABOVE** the brick image. `renderHeader` is p
 ```
 
 #### brick.renderFooter
-##### Type: `Func (brick.data) -> Component`
-Renders a function that is placed **BELOW** the brick image. `renderFooter` is passed `brick.data` to allow dynamic content rendering.
+##### Type: `Func (brick.data) -> React Component`
+A function that is executed **BELOW** the brick image `renderFooter()` is passed `brick.data` to allow dynamic content rendering of components.
 
 ###### IE: Brick with renderFooter
 ```
