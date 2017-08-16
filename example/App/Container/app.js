@@ -117,11 +117,11 @@ export default class example extends Component {
 
   render() {
     return (
-      <ScrollView style={{backgroundColor: '#f4f4f4'}}>
-        <View style={styles.center}>
+      <View style={{flex: 1, backgroundColor: '#f4f4f4'}}>
+        <View style={[styles.center, styles.header]}>
           <Text style={{ fontWeight: '800', fontSize: 20 }}>Masonry Demo</Text>
         </View>
-        <View style={[styles.center, { marginTop: 10, marginBottom: 25 }]}>
+        <View style={[styles.center, styles.buttonGroup, { marginTop: 10, marginBottom: 25 }]}>
           <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 2 })}>
             <Text>2 Column</Text>
           </TouchableHighlight>
@@ -135,7 +135,7 @@ export default class example extends Component {
             <Text>9 Columns</Text>
           </TouchableHighlight>
         </View>
-        <View style={[styles.center, { marginTop: 10, marginBottom: 25, flexDirection: 'column'}]}>
+        <View style={[styles.center, styles.slider, { marginTop: 10, marginBottom: 25, flexDirection: 'column'}]}>
           <View style={{paddingLeft: 10}}>
             <Text>Dynamically adjust padding: {this.state.padding}</Text>
           </View>
@@ -148,12 +148,12 @@ export default class example extends Component {
               onValueChange={(value) => this.setState({padding: value})} />
           </View>
         </View>
-        <View style={{height: '100%', padding: this.state.padding}}>
+        <View style={{flex: 1, flexGrow: 10, padding: this.state.padding}}>
           <Masonry
-          bricks={data}
-          columns={this.state.columns}/>
+            bricks={data}
+            columns={this.state.columns}/>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -163,7 +163,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f4f4f4',
-    flex: 1
+    flex: 1,
+    flexBasis: '10%'
+  },
+  header: {
+    flexGrow: 1
+  },
+  buttonGroup: {
+    flexGrow: 1
+  },
+  slider: {
+    flexGrow: 1
   },
   button: {
     backgroundColor: '#dbdcdb',

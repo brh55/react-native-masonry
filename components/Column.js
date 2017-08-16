@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight } from 'react-native';
+import { View, Image, TouchableHighlight, FlatList } from 'react-native';
 import styles from '../styles/main';
 import PropTypes from 'prop-types';
 import Brick from './Brick';
@@ -77,30 +77,54 @@ export default class Column extends Component {
   }
 
   // Renders the "bricks" within the columns
-  // _renderBricks :: [images] -> [TouchableTag || ImageTag...]
-  _renderBricks (bricks) {
-    return bricks.map((brick, index) => {
-      const gutter = (index === 0) ? 0 : brick.gutter;
-      const key = `RN-MASONRY-BRICK-${brick.column}-${index}`;
+  // _renderBrick :: images -> [TouchableTag || ImageTag...]
+  _renderBrick (data) {
+      // Data Structure
+      // {
+      //   "item": {
+      //     "uri": "https://img.buzzfeed.com/buzzfeed-static/static/2016-01/14/20/campaign_images/webdr15/which-delicious-mexican-food-item-are-you-based-o-2-20324-1452822970-1_dblbig.jpg",
+      //     "column": 0,
+      //     "dimensions": {
+      //       "width": 625,
+      //       "height": 415
+      //     },
+      //     "width": 180.675,
+      //     "height": 119.96820000000001,
+      //     "gutter": 3.65
+      //   },
+      //   "index": 9
+      // }
+      const brick = data.item;
+      const gutter = (data.index === 0) ? 0 : brick.gutter;
+      const key = `RN-MASONRY-BRICK-${brick.column}-${data.index}`;
       const props = { ...brick, gutter, key };
 
       return (
         <Brick
           {...props} />
       );
-    });
   }
 
   render() {
     return (
       <View
-        key={this.props.columnKey}
         style={[
-          { width: this.state.columnWidth },
+          { 
+            width: this.state.columnWidth,
+            overflow: 'hidden'
+          },
           styles.masonry__column
         ]}>
-          {this._renderBricks(this.state.images)}
+        <FlatList
+          key={this.props.columnKey}
+          data={this.state.images}
+          extraData={this.state}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderBrick}
+        />
       </View>
     )
   }
 }
+
+//

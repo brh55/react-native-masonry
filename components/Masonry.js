@@ -97,7 +97,7 @@ export default class Masonry extends Component {
 
   render() {
     return (
-  	<View onLayout={(event) => this._setParentDimensions(event)}>
+  	<View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
  	    <ListView
          contentContainerStyle={styles.masonry__container}
          dataSource={this.state.dataSource}
