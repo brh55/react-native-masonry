@@ -80,7 +80,7 @@ export default class Masonry extends Component {
       	(err) => console.warn('Image failed to load'),
       	(resolvedBrick) => {
       	  this.setState(state => {
-      	    const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData);
+      	    const sortedData = this._insertIntoColumn(resolvedBrick, state._sortedData);
 
       	    return {
       	      dataSource: state.dataSource.cloneWithRows(sortedData),

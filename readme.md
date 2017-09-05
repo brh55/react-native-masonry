@@ -29,7 +29,8 @@
 | Props   | Type                     | Description                                                                                                                                                                                                                                                                                 | Default |
 |---------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
 | bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. I.E:,`bricks=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | []     |
-| columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
+| columns | num | Desired number of columns | 2 |
+| sorted | bool | Whether to sort `bricks` according to their index position or allow bricks to fill in as soon as the `uri` is ready. | false |
 
 ### Brick Properties
 "Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column and require a `uri` property at a minimum. However, you can freely add additional properties to the `data` property if you need access to certain data within your `brick.onPress` handler and `footer/header` renderer. The following properties are available:
