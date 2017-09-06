@@ -52,7 +52,7 @@ export default class Column extends Component {
 
   // Resize image while maintain aspect ratio
   // _resizeByColumns :: ImgDimensions , parentDimensions, nColumns  -> AdjustedDimensions
-  _resizeByColumns (imgDimensions, parentDimensions, nColumns=2) {
+  _resizeByColumns (imgDimensions = { width: 0, height: 0 }, parentDimensions, nColumns=2) {
     const { height, width } = parentDimensions;
 
     // The gutter is 1% of the available view width
@@ -79,7 +79,7 @@ export default class Column extends Component {
   // Renders the "bricks" within the columns
   // _renderBrick :: images -> [TouchableTag || ImageTag...]
   _renderBrick (data) {
-      // Data Structure
+      // Example Data Structure
       // {
       //   "item": {
       //     "uri": "https://img.buzzfeed.com/buzzfeed-static/static/2016-01/14/20/campaign_images/webdr15/which-delicious-mexican-food-item-are-you-based-o-2-20324-1452822970-1_dblbig.jpg",
@@ -104,6 +104,9 @@ export default class Column extends Component {
           {...props} />
       );
   }
+  
+  // _keyExtractor :: item -> id
+  _keyExtractor = (item) => (item.id || item.key);
 
   render() {
     return (
