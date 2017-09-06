@@ -15,6 +15,8 @@
 3. At a minimal, declare the component in the render method prividing data for bricks
     ```js
     <Masonry
+      sorted // optional - Default: false
+      columns=4 // optional - Default: 2
       bricks=[
         { uri: 'http://image1.jpg' },
         { uri: 'http://image2.jpg' },
@@ -29,7 +31,8 @@
 | Props   | Type                     | Description                                                                                                                                                                                                                                                                                 | Default |
 |---------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
 | bricks    | array | A list of `Object:Bricks` to be passed into the row renderer. I.E:,`bricks=[{id: 1, uri: 'https://image.jpg', onPress: (brick) => this.redirect(brick.id)}, {id: 2, uri: 'https://hyper.jpg'}]` | []     |
-| columns | num                      | Desired number of columns                                                                                                                                                                                                                                                                   | 2       |
+| columns | num | Desired number of columns | 2 |
+| sorted | bool | Whether to sort `bricks` according to their index position or allow bricks to fill in as soon as the `uri` is ready. | false |
 
 ### Brick Properties
 "Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column and require a `uri` property at a minimum. However, you can freely add additional properties to the `data` property if you need access to certain data within your `brick.onPress` handler and `footer/header` renderer. The following properties are available:
@@ -38,19 +41,19 @@
 ##### Type: `String`
 The uri of the image location.
 
-IE: `uri: 'http://cats.com/cat1.jpeg'`
+*e.g.:* `uri: 'http://cats.com/cat1.jpeg'`
 
 #### brick.onPress
 ##### Type: `Func (brick.data)`
 A function handler when the brick is pressed. The function will be called with the instance of the brick, which provides it's dimensions, columns, as well as any user defined properties passed into the `bricks` prop. An image will be wrapped by a [`<TouchableHighlight>`](https://facebook.github.io/react-native/docs/touchablehighlight.html).
 
-IE: `onPress: (data) => goTo(data.id)`
+*e.g.:* `onPress: (data) => goTo(data.id)`
 
 #### brick.renderHeader
 ##### Type: `Func (brick.data) -> React Component`
 A function that is executed **ABOVE** the brick image, this function must return a React Component. `renderHeader()` is passed `brick.data` to allow dynamic content rendering of components.
 
-###### IE: Brick with renderHeader
+###### e.g.: Brick with renderHeader
 ```
 {
   // User defined data
@@ -76,7 +79,7 @@ A function that is executed **ABOVE** the brick image, this function must return
 ##### Type: `Func (brick.data) -> React Component`
 A function that is executed **BELOW** the brick image `renderFooter()` is passed `brick.data` to allow dynamic content rendering of components.
 
-###### IE: Brick with renderFooter
+###### e.g.: Brick with renderFooter
 ```
 {
   data: {
@@ -94,10 +97,15 @@ A function that is executed **BELOW** the brick image `renderFooter()` is passed
 ```
 
 ## Contribute
-:octocat: PR's are welcomed, just abide by rules listed within [contributing.json](contributing.json).
+### 👷🏽👷🏻‍♀️🐕<br>
+Pull requests are welcomed, just abide by rules listed within [contributing.json](contributing.json).
 
 ### Beginners
-Not sure where to start, or a beginner? No problemo! Take a look at the [issues page](https://github.com/brh55/react-native-masonry/issues) for `low-hanging` or `beginner-friendly` labels as an easy ways to start contributing.
+Not sure where to start, or a beginner? Take a look at the [issues page](https://github.com/brh55/react-native-masonry/issues) for `low-hanging` or `beginner-friendly` labels as an easy ways to start contributing.
+
+## Maintainers
+- [Brandon Him](https://github.com/brh55)
+- [Kevin McGill](https://github.com/kmcgill88)
 
 ## License
 MIT © [Brandon Him](https://github.com/brh55/react-native-masonry)

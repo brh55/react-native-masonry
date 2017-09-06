@@ -150,6 +150,7 @@ export default class example extends Component {
         </View>
         <View style={{flex: 1, flexGrow: 10, padding: this.state.padding}}>
           <Masonry
+            sorted
             bricks={data}
             columns={this.state.columns}/>
         </View>

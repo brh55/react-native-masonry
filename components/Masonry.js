@@ -8,8 +8,12 @@ import { resolveImage } from './model';
 import Column from './Column';
 import styles from '../styles/main';
 
-// assignObjectColumns :: Number -> [Objects] -> [Objects]
-const assignObjectColumns = (nColumns, index, targetObject) => ({...targetObject, ...{ column: index % nColumns }});
+// assignObjectColumn :: Number -> [Objects] -> [Objects]
+export const assignObjectColumn = (nColumns, index, targetObject) => ({...targetObject, ...{ column: index % nColumns }});
+
+// assignObjectIndex :: (Number, Object) -> Object
+// Assigns an `index` property` from bricks={data}` for later sorting.
+export const assignObjectIndex = (index, targetObject) => ({...targetObject, ...{ index }});
 
 // containMatchingUris :: ([brick], [brick]) -> Bool
 const containMatchingUris = (r1, r2) => isEqual(r1.map(brick => brick.uri), r2.map(brick => brick.uri));
@@ -17,12 +21,14 @@ const containMatchingUris = (r1, r2) => isEqual(r1.map(brick => brick.uri), r2.m
 export default class Masonry extends Component {
   static propTypes = {
     bricks: PropTypes.array,
-    columns: PropTypes.number
+    columns: PropTypes.number,
+    sorted: PropTypes.bool,
   };
 
   static defaultProps = {
     bricks: [],
-    columns: 2
+    columns: 2,
+    sorted: false,
   };
 
   constructor(props) {
@@ -53,8 +59,9 @@ export default class Masonry extends Component {
         const newColumnCount = nextProps.columns;
         // Re-sort existing data instead of attempting to re-resolved
         const resortedData = this.state._resolvedData
-          .map((brick, index) => assignObjectColumns(newColumnCount, index, brick))
-          .reduce((sortDataAcc, resolvedBrick) => _insertIntoColumn(resolvedBrick, sortDataAcc), []);
+          .map((brick, index) => assignObjectColumn(newColumnCount, index, brick))
+          .map((brick, index) => assignObjectIndex(index, brick))
+          .reduce((sortDataAcc, resolvedBrick) => _insertIntoColumn(resolvedBrick, sortDataAcc, this.props.sorted), []);
 
       	this.setState({
       	  dataSource: this.state.dataSource.cloneWithRows(resortedData)
@@ -67,13 +74,14 @@ export default class Masonry extends Component {
 
   resolveBricks({ bricks, columns }) {
     bricks
-      .map((brick, index) => assignObjectColumns(columns, index, brick))
+      .map((brick, index) => assignObjectColumn(columns, index, brick))
+      .map((brick, index) => assignObjectIndex(index, brick))
       .map(brick => resolveImage(brick))
       .map(resolveTask => resolveTask.fork(
       	(err) => console.warn('Image failed to load'),
       	(resolvedBrick) => {
       	  this.setState(state => {
-      	    const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData);
+      	    const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
 
       	    return {
       	      dataSource: state.dataSource.cloneWithRows(sortedData),
@@ -115,15 +123,20 @@ export default class Masonry extends Component {
 };
 
 // Returns a copy of the dataSet with resolvedBrick in correct place
-// (resolvedBrick, dataSetA) -> dataSetB
-export function _insertIntoColumn (resolvedBrick, dataSet) {
-  const columnIndex = resolvedBrick.column;
+// (resolvedBrick, dataSetA, bool) -> dataSetB
+export function _insertIntoColumn (resolvedBrick, dataSet, sorted) {
   let dataCopy = dataSet.slice();
+  const columnIndex = resolvedBrick.column;
   const column = dataSet[columnIndex];
 
   if (column) {
     // Append to existing "row"/"column"
-    dataCopy[columnIndex] = [...column, resolvedBrick];
+    const bricks = [...column, resolvedBrick]
+    if(sorted) {
+      // Sort bricks according to the index of their original array position
+      bricks = bricks.sort((a, b) => { return (a.index < b.index) ? -1 : 1; });
+    }
+    dataCopy[columnIndex] = bricks
   } else {
     // Pass it as a new "row" for the data source
     dataCopy = [...dataCopy, [resolvedBrick]];

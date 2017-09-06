@@ -1,34 +1,18 @@
 import { Text, View, TouchableHighlight } from 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
-import Masonry from '../components/Masonry';
+import Masonry, {
+  _insertIntoColumn,
+  assignObjectColumn,
+  assignObjectIndex,
+} from '../components/Masonry';
 import renderer from 'react-test-renderer';
 
-const brickSet = [
-  {
-    uri: 'https://cat1.jpg',
-    data: {
-      id: 1
-    }
-  },
-  {
-    data: {
-      routeId: 'cat-3',
-      id: 2,
-    },
-    uri: 'http://test.com/cat3.jpg',
-    onPress: (brick) => redirect(brick.routeId)
-  },
-  {
-    data: {
-      id: 3
-    },
-    uri: 'http://test.com/cat2.jpg'
-  },
-  {
-    uri: 'http://test.com/cat3.jpg'
-  }
-];
+import {
+  brickSet,
+  minimumBricks,
+} from './mocks/masonryMock';
+
 
 test('Render masonry correct', () => {
   const masonry = renderer.create(<Masonry bricks={brickSet} columns={3} />).toJSON();
@@ -48,4 +32,25 @@ test('Render masonry correct', () => {
 test('SNAPSHOT: All functionality should match prev snapshot', () => {
   const tree = renderer.create(<Masonry bricks={brickSet} columns={3} />).toJSON();
   expect(tree).toMatchSnapshot();
+});
+
+test('PRIVATE FUNC: _insertIntoColumn sorts bricks according to index of bricks array and columns', () => {
+  const nColumns = 2;
+  const assignedBricks = minimumBricks
+  .map((brick, index) => assignObjectColumn(nColumns, index, brick))
+  .map((brick, index) => assignObjectIndex(index, brick));
+
+  const expectedData = [
+    [assignedBricks[0], assignedBricks[2]], //column 0
+    [assignedBricks[1], assignedBricks[3]] //column 1
+  ];
+
+  //when
+  let expectedSorted = [];
+  assignedBricks.forEach((brick) => {
+    expectedSorted = _insertIntoColumn(brick, expectedSorted, true);
+  });
+
+  //then
+  expect(expectedSorted).toEqual(expectedData);
 });
