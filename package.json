@@ -48,6 +48,9 @@
   },
   "jest": {
     "preset": "jest-react-native",
-    "modulePathIgnorePatterns": ["<rootDir>/example/", "<rootDir>/__tests__/mocks/"]
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/",
+      "<rootDir>/__tests__/mocks/"
+    ]
   }
 }

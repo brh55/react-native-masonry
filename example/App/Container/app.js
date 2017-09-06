@@ -150,8 +150,9 @@ export default class example extends Component {
         </View>
         <View style={{height: '100%', padding: this.state.padding}}>
           <Masonry
-          bricks={data}
-          columns={this.state.columns}/>
+            sorted
+            bricks={data}
+            columns={this.state.columns}/>
         </View>
       </ScrollView>
     );
