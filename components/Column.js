@@ -121,7 +121,6 @@ export default class Column extends Component {
         <FlatList
           key={this.props.columnKey}
           data={this.state.images}
-          extraData={this.state}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderBrick}
         />
