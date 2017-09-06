@@ -15,6 +15,8 @@
 3. At a minimal, declare the component in the render method prividing data for bricks
     ```js
     <Masonry
+      sorted // optional - Default: false
+      columns=4 // optional - Default: 2
       bricks=[
         { uri: 'http://image1.jpg' },
         { uri: 'http://image2.jpg' },
