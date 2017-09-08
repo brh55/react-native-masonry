@@ -23,12 +23,14 @@ export default class Masonry extends Component {
     bricks: PropTypes.array,
     columns: PropTypes.number,
     sorted: PropTypes.bool,
+    imageContainerStyle: PropTypes.object,
   };
 
   static defaultProps = {
     bricks: [],
     columns: 2,
     sorted: false,
+    imageContainerStyle: {},
   };
 
   constructor(props) {
@@ -115,6 +117,7 @@ export default class Masonry extends Component {
              data={data}
              columns={this.props.columns}
              parentDimensions={this.state.dimensions}
+             imageContainerStyle={this.props.imageContainerStyle}
              key={`RN-MASONRY-COLUMN-${rowID}`}/> }
        />
   	</View>
