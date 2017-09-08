@@ -10,7 +10,8 @@ export default class Column extends Component {
     data: PropTypes.array,
     columns: PropTypes.number,
     parentDimensions: PropTypes.object,
-    columnKey: PropTypes.string
+    columnKey: PropTypes.string,
+    imageContainerStyle: PropTypes.object,
   };
 
   constructor(props) {
