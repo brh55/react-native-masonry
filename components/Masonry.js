@@ -23,6 +23,7 @@ export default class Masonry extends Component {
     bricks: PropTypes.array,
     columns: PropTypes.number,
     sorted: PropTypes.bool,
+    imageContainerStyle: PropTypes.object,
   };
 
   static defaultProps = {
