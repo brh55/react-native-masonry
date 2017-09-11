@@ -14,6 +14,7 @@ import {
   Image,
   Slider
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Masonry from 'react-native-masonry';
 
 // list of images
@@ -45,10 +46,10 @@ const data = [
     }
   },
   {
-    uri: 'https://s-media-cache-ak0.pinimg.com/736x/b1/21/df/b121df29b41b771d6610dba71834e512.jpg'
+    uri: 'https://s-media-cache-ak0.pinimg.com/736x/b1/21/df/b121df29b41b771d6610dba71834e512.jpg',
   },
   {
-    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQpD8mz-2Wwix8hHbGgR-mCFQVFTF7TF7hU05BxwLVO1PS5j-rZA'
+    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQpD8mz-2Wwix8hHbGgR-mCFQVFTF7TF7hU05BxwLVO1PS5j-rZA',
   },
   {
     uri: 'https://s-media-cache-ak0.pinimg.com/736x/5a/15/0c/5a150cf9d5a825c8b5871eefbeda8d14.jpg'
@@ -152,7 +153,8 @@ export default class example extends Component {
           <Masonry
             sorted
             bricks={data}
-            columns={this.state.columns}/>
+            columns={this.state.columns}
+            customImageComponent={FastImage} />
         </View>
       </ScrollView>
     );
