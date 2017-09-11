@@ -16,7 +16,7 @@
     ```js
     <Masonry
       sorted // optional - Default: false
-      columns=4 // optional - Default: 2
+      columns={4} // optional - Default: 2
       bricks=[
         { uri: 'http://image1.jpg' },
         { uri: 'http://image2.jpg' },
