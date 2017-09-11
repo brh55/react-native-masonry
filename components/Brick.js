@@ -17,14 +17,35 @@ export default function Brick (props) {
 }
 
 // _getImageTag :: Image, Gutter -> ImageTag
-export function _getImageTag (image, gutter = 0) {
-  return (
+export function _getImageTag (props, gutter = 0) {
+  const imageProps = {
+    key: props.uri,
+    source: {
+      uri: props.uri
+    },
+    resizeMethod: 'auto',
+    style: {
+       ...props.imageContainerStyle,
+
+       width: props.width,
+       height: props.height,
+       marginTop: gutter,
+    }
+  };
+
+  if (props.customImageComponent) {
+    const CustomRender = props.customImageComponent;
+    return (
+      <CustomRender
+        {...props.customImageProps}
+        {...imageProps} />
+    )
+  } else {
+    return (
       <Image
-        key={image.uri}
-        source={{ uri: image.uri }}
-        resizeMethod='auto'
-        style={{ width: image.width, height: image.height, marginTop: gutter, ...image.imageContainerStyle }} />
-  );
+        {...imageProps} />
+      );
+  }
 }
 
 // _getTouchableUnit :: Image, Number -> TouchableTag
