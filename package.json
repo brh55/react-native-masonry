@@ -31,7 +31,8 @@
   "dependencies": {
     "data.task": "^3.1.1",
     "lodash.isequal": "^4.5.0",
-    "prop-types": "^15.5.8"
+    "prop-types": "^15.5.8",
+    "react-native-injectable-component": "^0.1.2"
   },
   "peerDependencies": {
     "react": "*",
@@ -48,8 +49,8 @@
   },
   "contributors": [
     {
-      "name" : "Kevin McGill",
-      "url" : "http://mcgilldevtech.com/"
+      "name": "Kevin McGill",
+      "url": "http://mcgilldevtech.com/"
     }
   ],
   "jest": {

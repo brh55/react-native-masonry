@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableHighlight } from 'react-native';
+import Injector from 'react-native-injectable-component';
 
 export default function Brick (props) {
   // Avoid margins for first element
@@ -33,19 +34,13 @@ export function _getImageTag (props, gutter = 0) {
     }
   };
 
-  if (props.customImageComponent) {
-    const CustomRender = props.customImageComponent;
-    return (
-      <CustomRender
-        {...props.customImageProps}
-        {...imageProps} />
-    )
-  } else {
-    return (
-      <Image
-        {...imageProps} />
-      );
-  }
+  return (
+    <Injector
+      defaultComponent={Image}
+      defaultProps={imageProps}
+      injectant={props.customImageComponent}
+      injectantProps={props.customImageProps} />
+  )
 }
 
 // _getTouchableUnit :: Image, Number -> TouchableTag
