@@ -26,12 +26,9 @@ test('Render Brick', () => {
 
 test('PRIVATE FUNC: Renders image tag', () => {
   const imageTag = _getImageTag(mock[0], 9);
-  expect(imageTag).toEqual(
-    <Image
-      key='http://test1.jpg'
-      source={{ uri: 'http://test1.jpg' }}
-      resizeMethod="auto"
-      style={{ width: 100, height: 200, marginTop: 9 }} />);
+  const imageTree = renderer.create(imageTag).toJSON();
+  expect(imageTree.type).toEqual('Image');
+  expect(imageTree.props.uri).toEqual('http://test.com/1.jpg');
 });
 
 test('PRIVATE FUNC: Renders touchable tag properly', () => {
