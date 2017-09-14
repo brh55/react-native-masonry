@@ -1,4 +1,4 @@
-import { View, ListView, Image, Text, Dimensions } from 'react-native';
+import { View, FlatList, Image, Text, Dimensions } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Task from 'data.task';
@@ -37,10 +37,8 @@ export default class Masonry extends Component {
 
   constructor(props) {
     super(props);
-    // Assuming users don't want duplicated images, if this is not the case we can always change the diff check
-    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !containMatchingUris(r1, r2) });
     this.state = {
-      dataSource: this.ds.cloneWithRows([]),
+      dataSource: [],
       dimensions: {},
       initialOrientation: true,
       _sortedData: [],
@@ -68,7 +66,7 @@ export default class Masonry extends Component {
           .reduce((sortDataAcc, resolvedBrick) => _insertIntoColumn(resolvedBrick, sortDataAcc, this.props.sorted), []);
 
       	this.setState({
-      	  dataSource: this.state.dataSource.cloneWithRows(resortedData)
+      	  dataSource: resortedData
       	});
       }
     } else {
@@ -86,14 +84,14 @@ export default class Masonry extends Component {
       	(resolvedBrick) => {
       	  this.setState(state => {
       	    const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
-
+  
       	    return {
-      	      dataSource: state.dataSource.cloneWithRows(sortedData),
+      	      dataSource: sortedData,
       	      _sortedData: sortedData,
       	      _resolvedData: [...state._resolvedData, resolvedBrick]
       	    }
       	  });;
-      	}));
+        }));
   }
 
   _setParentDimensions(event) {
@@ -110,19 +108,19 @@ export default class Masonry extends Component {
   render() {
     return (
   	<View onLayout={(event) => this._setParentDimensions(event)}>
- 	    <ListView
+ 	    <FlatList
          contentContainerStyle={styles.masonry__container}
-         dataSource={this.state.dataSource}
-         enableEmptySections
-         renderRow={(data, sectionId, rowID) =>
+         data={this.state.dataSource}
+         keyExtractor={(item, index) => (`RN-MASONRY-COLUMN-${index}`)}
+         renderItem={({item, index}) => (
            <Column
-             data={data}
+             data={item}
              columns={this.props.columns}
              parentDimensions={this.state.dimensions}
              imageContainerStyle={this.props.imageContainerStyle}
              customImageComponent={this.props.customImageComponent}
              customImageProps={this.props.customImageProps}
-             key={`RN-MASONRY-COLUMN-${rowID}`}/> }
+            /> )}
        />
   	</View>
     )
@@ -139,7 +137,7 @@ export function _insertIntoColumn (resolvedBrick, dataSet, sorted) {
   if (column) {
     // Append to existing "row"/"column"
     const bricks = [...column, resolvedBrick]
-    if(sorted) {
+    if (sorted) {
       // Sort bricks according to the index of their original array position
       bricks = bricks.sort((a, b) => { return (a.index < b.index) ? -1 : 1; });
     }
