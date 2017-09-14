@@ -28,7 +28,7 @@ test('PRIVATE FUNC: Renders image tag', () => {
   const imageTag = _getImageTag(mock[0], 9);
   const imageTree = renderer.create(imageTag).toJSON();
   expect(imageTree.type).toEqual('Image');
-  expect(imageTree.props.uri).toEqual('http://test.com/1.jpg');
+  expect(imageTree.props.source.uri).toEqual('http://test1.jpg');
 });
 
 test('PRIVATE FUNC: Renders touchable tag properly', () => {
