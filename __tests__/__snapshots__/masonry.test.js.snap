@@ -3,11 +3,15 @@
 exports[`SNAPSHOT: All functionality should match prev snapshot 1`] = `
 <View
   onLayout={[Function]}
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
 >
   <RCTScrollView
     contentContainerStyle={
       Object {
-        "flex": 1,
         "flexDirection": "row",
         "justifyContent": "space-between",
         "width": "100%",

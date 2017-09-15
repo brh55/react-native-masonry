@@ -16,6 +16,10 @@ export default class Column extends Component {
     customImageProps: PropTypes.object
   };
 
+  static defaultProps = {
+    imageContainerStyle: {}
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +85,7 @@ export default class Column extends Component {
 
   // Renders the "bricks" within the columns
   // _renderBrick :: images -> [TouchableTag || ImageTag...]
-  _renderBrick (data) {
+  _renderBrick = (data) => {
       // Example Data Structure
       // {
       //   "item": {
@@ -132,5 +136,3 @@ export default class Column extends Component {
     )
   }
 }
-
-//

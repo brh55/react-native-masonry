@@ -22,7 +22,6 @@ test('Render masonry correct', () => {
 
   // Crucial styles for the grid to work
   expect(scrollView.props.contentContainerStyle).toEqual({
-    flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
     width: '100%'
