@@ -26,11 +26,10 @@ export function _getImageTag (props, gutter = 0) {
     },
     resizeMethod: 'auto',
     style: {
-       ...props.imageContainerStyle,
-
        width: props.width,
        height: props.height,
        marginTop: gutter,
+       ...props.imageContainerStyle,
     }
   };
 
@@ -49,7 +48,9 @@ export function _getTouchableUnit (image, gutter = 0) {
       <TouchableHighlight
          key={image.uri}
          onPress={() => image.onPress(image.data)}>
+         <View>
             { _getImageTag(image, gutter) }
+        </View>
       </TouchableHighlight>
   );
 }
