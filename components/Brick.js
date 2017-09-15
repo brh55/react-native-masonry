@@ -50,7 +50,7 @@ export function _getTouchableUnit (image, gutter = 0) {
          onPress={() => image.onPress(image.data)}>
          <View>
             { _getImageTag(image, gutter) }
-        </View>
+         </View>
       </TouchableHighlight>
   );
 }
