@@ -1,5 +1,14 @@
 # react-native-masonry   [![Travis](https://img.shields.io/travis/brh55/react-native-masonry/master.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry)
-> :raised_hands: A easy to use react-native component to render a masonry~ish layout for local and remote images with support for dynamic column rendering, progressive image loading, device rotation, on-press handlers, and headers/captions.
+> :raised_hands: A easy to use react-native component to render a masonry~ish layout for remote images
+
+`react-native-masonry` supports these features 👯:
+- Dynamic Column Rendering
+- Progressive Item Loading
+- Device Rotation
+- On-press Handlers
+- Custom Headers & Captions
+- Optimized to Rendering Large List
+- Support for Third-Party Image components
 
 ![v0.1.0 Demo](http://g.recordit.co/SLAvTzf9HY.gif)
 
