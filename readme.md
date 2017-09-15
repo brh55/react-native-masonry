@@ -3,7 +3,7 @@
 
 > :raised_hands: An easy to use, pure JS react-native component to render a masonry~ish layout for remote images
 
-`react-native-masonry` supports these features 👯:
+`react-native-masonry` is built with the following features and functionalities baked in 🍰:
 - Dynamic Column Rendering
 - Progressive Item Loading
 - Device Rotation
@@ -11,6 +11,7 @@
 - Custom Headers & Captions
 - Optimized to Rendering Large List
 - Support for Third-Party Image components
+- Automatic Sizing Based on Available Space
 
 ![v0.1.0 Demo](http://g.recordit.co/SLAvTzf9HY.gif)
 
