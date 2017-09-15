@@ -1,6 +1,6 @@
 {
   "name": "react-native-masonry",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A react-native component for a masonry layout",
   "main": "./components/Masonry.js",
   "scripts": {
@@ -31,29 +31,30 @@
   "dependencies": {
     "data.task": "^3.1.1",
     "lodash.isequal": "^4.5.0",
-    "prop-types": "^15.5.8"
+    "prop-types": "^15.5.8",
+    "react-native-injectable-component": "^0.1.2"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "^0.43.0"
   },
   "devDependencies": {
-    "babel-preset-react-native": "^1.9.1",
-    "babel-jest": "^19.0.0",
-    "jest": "^19.0.2",
+    "babel-jest": "^20.0.3",
+    "babel-preset-react-native": "^2.1.0",
+    "jest": "^20.0.4",
     "jest-react-native": "^18.0.0",
-    "react": "16.0.0-alpha.6",
-    "react-native": "^0.43.4",
-    "react-test-renderer": "^15.5.4"
+    "react": "16.0.0-alpha.12",
+    "react-native": "^0.46.4",
+    "react-test-renderer": "^16.0.0-alpha.12"
   },
   "contributors": [
     {
-      "name" : "Kevin McGill",
-      "url" : "http://mcgilldevtech.com/"
+      "name": "Kevin McGill",
+      "url": "http://mcgilldevtech.com/"
     }
   ],
   "jest": {
-    "preset": "jest-react-native",
+    "preset": "react-native",
     "modulePathIgnorePatterns": [
       "<rootDir>/example/",
       "<rootDir>/__tests__/mocks/"
