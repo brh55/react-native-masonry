@@ -1,5 +1,7 @@
-# react-native-masonry   [![Travis](https://img.shields.io/travis/brh55/react-native-masonry/master.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry)
-> :raised_hands: A easy to use react-native component to render a masonry~ish layout for remote images
+# react-native-masonry
+[![Travis](https://img.shields.io/travis/brh55/react-native-masonry/master.svg?style=flat-square)](https://travis-ci.org/brh55/react-native-masonry) [![David](https://img.shields.io/david/dev/brh55/react-native-masonry.svg?style=flat-square)](https://david-dm.org/brh55/react-native-masonry?type=dev) [![npm](https://img.shields.io/npm/dt/react-native-masonry.svg?style=flat-square)](https://www.npmjs.com/package/react-native-masonry) [![Expo Demo](https://img.shields.io/badge/Expo-Ready%20&%20Demo%20Available-1871b5.svg?style=flat-square)](https://expo.io/@community/masonry-example)
+
+> :raised_hands: An easy to use, pure JS react-native component to render a masonry~ish layout for remote images
 
 `react-native-masonry` supports these features 👯:
 - Dynamic Column Rendering
