@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableHighlight } from 'react-native';
+import { View, Image, TouchableHighlight, FlatList } from 'react-native';
 import styles from '../styles/main';
 import PropTypes from 'prop-types';
 import Brick from './Brick';
@@ -12,6 +12,8 @@ export default class Column extends Component {
     parentDimensions: PropTypes.object,
     columnKey: PropTypes.string,
     imageContainerStyle: PropTypes.object,
+    customImageComponent: PropTypes.func,
+    customImageProps: PropTypes.object
   };
 
   constructor(props) {
@@ -53,7 +55,7 @@ export default class Column extends Component {
 
   // Resize image while maintain aspect ratio
   // _resizeByColumns :: ImgDimensions , parentDimensions, nColumns  -> AdjustedDimensions
-  _resizeByColumns (imgDimensions, parentDimensions, nColumns=2) {
+  _resizeByColumns (imgDimensions = { width: 0, height: 0 }, parentDimensions, nColumns=2) {
     const { height, width } = parentDimensions;
 
     // The gutter is 1% of the available view width
@@ -78,31 +80,57 @@ export default class Column extends Component {
   }
 
   // Renders the "bricks" within the columns
-  // _renderBricks :: [images] -> [TouchableTag || ImageTag...]
-  _renderBricks (bricks) {
-    return bricks.map((brick, index) => {
-      const gutter = (index === 0) ? 0 : brick.gutter;
-      const key = `RN-MASONRY-BRICK-${brick.column}-${index}`;
-      const { imageContainerStyle } = this.props;
-      const props = { ...brick, gutter, key, imageContainerStyle };
+  // _renderBrick :: images -> [TouchableTag || ImageTag...]
+  _renderBrick (data) {
+      // Example Data Structure
+      // {
+      //   "item": {
+      //     "uri": "https://img.buzzfeed.com/buzzfeed-static/static/2016-01/14/20/campaign_images/webdr15/which-delicious-mexican-food-item-are-you-based-o-2-20324-1452822970-1_dblbig.jpg",
+      //     "column": 0,
+      //     "dimensions": {
+      //       "width": 625,
+      //       "height": 415
+      //     },
+      //     "width": 180.675,
+      //     "height": 119.96820000000001,
+      //     "gutter": 3.65
+      //   },
+      //   "index": 9
+      // }
+      const brick = data.item;
+      const gutter = (data.index === 0) ? 0 : brick.gutter;
+      const key = `RN-MASONRY-BRICK-${brick.column}-${data.index}`;
+      const { imageContainerStyle, customImageComponent, customImageProps } = this.props;
+      const props = { ...brick, gutter, key, imageContainerStyle, customImageComponent, customImageProps };
 
       return (
         <Brick
           {...props} />
       );
-    });
   }
+  
+  // _keyExtractor :: item -> id
+  _keyExtractor = (item) => (item.id || item.key);
 
   render() {
     return (
       <View
-        key={this.props.columnKey}
         style={[
-          { width: this.state.columnWidth },
+          { 
+            width: this.state.columnWidth,
+            overflow: 'hidden'
+          },
           styles.masonry__column
         ]}>
-          {this._renderBricks(this.state.images)}
+        <FlatList
+          key={this.props.columnKey}
+          data={this.state.images}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderBrick}
+        />
       </View>
     )
   }
 }
+
+//
