@@ -12,6 +12,8 @@ export default class Column extends Component {
     parentDimensions: PropTypes.object,
     columnKey: PropTypes.string,
     imageContainerStyle: PropTypes.object,
+    customImageComponent: PropTypes.func,
+    customImageProps: PropTypes.object
   };
 
   constructor(props) {
@@ -98,8 +100,8 @@ export default class Column extends Component {
       const brick = data.item;
       const gutter = (data.index === 0) ? 0 : brick.gutter;
       const key = `RN-MASONRY-BRICK-${brick.column}-${data.index}`;
-      const { imageContainerStyle } = this.props;
-      const props = { ...brick, gutter, key, imageContainerStyle };
+      const { imageContainerStyle, customImageComponent, customImageProps } = this.props;
+      const props = { ...brick, gutter, key, imageContainerStyle, customImageComponent, customImageProps };
 
       return (
         <Brick

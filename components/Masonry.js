@@ -24,6 +24,8 @@ export default class Masonry extends Component {
     columns: PropTypes.number,
     sorted: PropTypes.bool,
     imageContainerStyle: PropTypes.object,
+    customImageComponent: PropTypes.func,
+    customImageProps: PropTypes.object
   };
 
   static defaultProps = {
@@ -80,18 +82,18 @@ export default class Masonry extends Component {
       .map((brick, index) => assignObjectIndex(index, brick))
       .map(brick => resolveImage(brick))
       .map(resolveTask => resolveTask.fork(
-      	(err) => console.warn('Image failed to load'),
-      	(resolvedBrick) => {
-      	  this.setState(state => {
-      	    const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
+        (err) => console.warn('Image failed to load'),
+        (resolvedBrick) => {
+            this.setState(state => {
+              const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
 
-      	    return {
-      	      dataSource: state.dataSource.cloneWithRows(sortedData),
-      	      _sortedData: sortedData,
-      	      _resolvedData: [...state._resolvedData, resolvedBrick]
-      	    }
-      	  });;
-      	}));
+              return {
+                dataSource: state.dataSource.cloneWithRows(sortedData),
+                _sortedData: sortedData,
+                _resolvedData: [...state._resolvedData, resolvedBrick]
+              }
+            });;
+        }));
   }
 
   _setParentDimensions(event) {
@@ -118,6 +120,8 @@ export default class Masonry extends Component {
              columns={this.props.columns}
              parentDimensions={this.state.dimensions}
              imageContainerStyle={this.props.imageContainerStyle}
+             customImageComponent={this.props.customImageComponent}
+             customImageProps={this.props.customImageProps}
              key={`RN-MASONRY-COLUMN-${rowID}`}/> }
        />
   	</View>
@@ -134,12 +138,12 @@ export function _insertIntoColumn (resolvedBrick, dataSet, sorted) {
 
   if (column) {
     // Append to existing "row"/"column"
-    const bricks = [...column, resolvedBrick]
-    if(sorted) {
+    const bricks = [...column, resolvedBrick];
+    if (sorted) {
       // Sort bricks according to the index of their original array position
-      bricks = bricks.sort((a, b) => { return (a.index < b.index) ? -1 : 1; });
+      bricks = bricks.sort((a, b) => (a.index < b.index) ? -1 : 1);
     }
-    dataCopy[columnIndex] = bricks
+    dataCopy[columnIndex] = bricks;
   } else {
     // Pass it as a new "row" for the data source
     dataCopy = [...dataCopy, [resolvedBrick]];
