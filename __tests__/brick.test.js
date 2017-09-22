@@ -1,5 +1,5 @@
 import Masonry from '../components/Masonry';
-import { TouchableHighlight, Image, Text } from 'react-native';
+import { TouchableHighlight, Image, Text, View } from 'react-native';
 import React from 'react';
 import renderer from 'react-test-renderer';
 
@@ -37,6 +37,8 @@ test('PRIVATE FUNC: Renders touchable tag properly', () => {
       <TouchableHighlight
          key={mock[0].uri}
          onPress={() => mock[0].onPress(mock[0])}>
-      { _getImageTag(mock[0], 9) }
+      <View>
+        { _getImageTag(mock[0], 9) }
+     </View>
     </TouchableHighlight>));
 });
