@@ -131,9 +131,9 @@ Pull requests are welcomed, just abide by rules listed within [contributing.json
 ### Beginners
 Not sure where to start, or a beginner? Take a look at the [issues page](https://github.com/brh55/react-native-masonry/issues) for `low-hanging` or `beginner-friendly` labels as an easy ways to start contributing.
 
-## Maintainers
-- [Brandon Him](https://github.com/brh55)
-- [Kevin McGill](https://github.com/kmcgill88)
+### Contributors
+Thank you to all the people who have already contributed to react-native-masonry!
+<a href="graphs/contributors"><img src="https://opencollective.com/react-native-masonry/contributors.svg?width=890" /></a>
 
 ## License
 MIT © [Brandon Him](https://github.com/brh55/react-native-masonry)
