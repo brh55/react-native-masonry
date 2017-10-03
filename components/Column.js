@@ -114,7 +114,7 @@ export default class Column extends Component {
   }
   
   // _keyExtractor :: item -> id
-  _keyExtractor = (item) => (item.id || item.key);
+  _keyExtractor = (item) => ("IMAGE-KEY-" + item.uri + "---" + (item.data.key ? item.data.key : "0"));
 
   render() {
     return (
