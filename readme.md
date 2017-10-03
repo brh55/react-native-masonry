@@ -29,11 +29,11 @@
     <Masonry
       sorted // optional - Default: false
       columns={4} // optional - Default: 2
-      bricks=[
-        { uri: 'http://image1.jpg' },
+      bricks={[
+        { uri: 'http://image1.jpg' },
         { uri: 'http://image2.jpg' },
         { uri: 'http://image3.jpg' }
-      ]
+      ]}
     />
     ```
 4. Still a bit confused :confounded:, or want to see it in action? No worries, run the [example application](example) on your local machine to examine how to get started or try it out on [Expo.io](https://expo.io/@community/masonry-example).
