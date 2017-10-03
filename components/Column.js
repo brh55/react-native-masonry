@@ -112,15 +112,15 @@ export default class Column extends Component {
           {...props} />
       );
   }
-  
+
   // _keyExtractor :: item -> id
-  _keyExtractor = (item) => ("IMAGE-KEY-" + item.uri + "---" + (item.data.key ? item.data.key : "0"));
+  _keyExtractor = (item) => ("IMAGE-KEY-" + item.uri + "---" + (item.key ? item.key : "0"));
 
   render() {
     return (
       <View
         style={[
-          { 
+          {
             width: this.state.columnWidth,
             overflow: 'hidden'
           },
