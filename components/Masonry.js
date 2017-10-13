@@ -122,6 +122,7 @@ export default class Masonry extends Component {
              imageContainerStyle={this.props.imageContainerStyle}
              customImageComponent={this.props.customImageComponent}
              customImageProps={this.props.customImageProps}
+             spacing={this.props.spacing}
              key={`RN-MASONRY-COLUMN-${rowID}`}/> }
        />
   	</View>
