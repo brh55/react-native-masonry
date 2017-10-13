@@ -17,7 +17,8 @@ export default class Column extends Component {
   };
 
   static defaultProps = {
-    imageContainerStyle: {}
+    imageContainerStyle: {},
+    spacing: 1
   };
 
   constructor(props) {
@@ -64,7 +65,7 @@ export default class Column extends Component {
 
     // The gutter is 1% of the available view width
     const gutterBase = width / 100;
-    const gutterSize = gutterBase * 1;
+    const gutterSize = gutterBase * this.props.spacing;
 
     // Column gutters are shared between right and left image
     const columnWidth = (width / nColumns) - (gutterSize / 2);

@@ -25,7 +25,8 @@ export default class Masonry extends Component {
     sorted: PropTypes.bool,
     imageContainerStyle: PropTypes.object,
     customImageComponent: PropTypes.func,
-    customImageProps: PropTypes.object
+    customImageProps: PropTypes.object,
+    spacing: PropTypes.number
   };
 
   static defaultProps = {
@@ -33,6 +34,7 @@ export default class Masonry extends Component {
     columns: 2,
     sorted: false,
     imageContainerStyle: {},
+    spacing: 1
   };
 
   constructor(props) {
@@ -122,6 +124,7 @@ export default class Masonry extends Component {
              imageContainerStyle={this.props.imageContainerStyle}
              customImageComponent={this.props.customImageComponent}
              customImageProps={this.props.customImageProps}
+             spacing={this.props.spacing}
              key={`RN-MASONRY-COLUMN-${rowID}`}/> }
        />
   	</View>
