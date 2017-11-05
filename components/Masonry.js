@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Task from 'data.task';
 import isEqual from 'lodash.isequal';
+import differenceBy from 'lodash.differenceby';
+
 
 import { resolveImage } from './model';
 import Column from './Column';
@@ -74,29 +76,58 @@ export default class Masonry extends Component {
       	});
       }
     } else {
-      this.resolveBricks(nextProps);
+		console.log(this.state._sortedData);
+		console.log(this.state._resolvedData);
+		console.log(nextProps);
+		this.resolveBricks(nextProps, true);
     }
   }
 
-  resolveBricks({ bricks, columns }) {
-    bricks
-      .map((brick, index) => assignObjectColumn(columns, index, brick))
-      .map((brick, index) => assignObjectIndex(index, brick))
-      .map(brick => resolveImage(brick))
-      .map(resolveTask => resolveTask.fork(
-        (err) => console.warn('Image failed to load'),
-        (resolvedBrick) => {
-            this.setState(state => {
-              const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
+	resolveBricks({ bricks, columns }, update = false) {
+		if (update) {
+			// Assign the new bricks their spots ahead of time
+			// We can utilize this to determine where to insert upon our existing
+			// Rendered masonry
+			const assignedBricks = bricks
+				  .map((brick, index) => assignObjectColumn(columns, index, brick))
+				  .map((brick, index) => assignObjectIndex(index, brick));
 
-              return {
-                dataSource: state.dataSource.cloneWithRows(sortedData),
-                _sortedData: sortedData,
-                _resolvedData: [...state._resolvedData, resolvedBrick]
-              }
-            });;
-        }));
-  }
+			const unresolvedBricks = differenceBy(assignedBricks, this.state._resolvedData, 'uri');
+			unresolvedBricks
+				.map(brick => resolveImage(brick))
+				.map(resolveTask => resolveTask.fork(
+					(err) => console.warn('Image failed to load'),
+					(resolvedBrick) => {
+						this.setState(state => {
+							const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
+
+							return {
+								dataSource: state.dataSource.cloneWithRows(sortedData),
+								_sortedData: sortedData,
+								_resolvedData: [...state._resolvedData, resolvedBrick]
+							};
+						});;
+					}));
+		} else {
+			bricks
+				.map((brick, index) => assignObjectColumn(columns, index, brick))
+				.map((brick, index) => assignObjectIndex(index, brick))
+				.map(brick => resolveImage(brick))
+				.map(resolveTask => resolveTask.fork(
+					(err) => console.warn('Image failed to load'),
+					(resolvedBrick) => {
+						this.setState(state => {
+							const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
+							console.log(sortedData);
+							return {
+								dataSource: state.dataSource.cloneWithRows(sortedData),
+								_sortedData: sortedData,
+								_resolvedData: [...state._resolvedData, resolvedBrick]
+							};
+						});;
+					}));
+		}
+	}
 
   _setParentDimensions(event) {
     // Currently height isn't being utilized, but will pass through for future features

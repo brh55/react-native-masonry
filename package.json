@@ -31,6 +31,7 @@
   "homepage": "https://github.com/brh55/react-native-masonry#readme",
   "dependencies": {
     "data.task": "^3.1.1",
+    "lodash.differenceby": "^4.8.0",
     "lodash.isequal": "^4.5.0",
     "opencollective": "^1.0.3",
     "prop-types": "^15.5.8",
