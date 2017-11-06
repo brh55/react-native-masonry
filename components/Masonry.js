@@ -5,7 +5,6 @@ import Task from 'data.task';
 import isEqual from 'lodash.isequal';
 import differenceBy from 'lodash.differenceby';
 
-
 import { resolveImage } from './model';
 import Column from './Column';
 import styles from '../styles/main';
@@ -71,47 +70,48 @@ export default class Masonry extends Component {
           .map((brick, index) => assignObjectIndex(index, brick))
           .reduce((sortDataAcc, resolvedBrick) => _insertIntoColumn(resolvedBrick, sortDataAcc, this.props.sorted), []);
 
-      	this.setState({
-      	  dataSource: this.state.dataSource.cloneWithRows(resortedData)
-      	});
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(resortedData)
+        });
       }
     } else {
-		this.resolveBricks(nextProps, true);
+    this.resolveBricks(nextProps, true);
     }
   }
 
-	resolveBricks({ bricks, columns }, newBricks = false) {
-		// Sort bricks and place them into their respectable columns
-		const sortedBricks = bricks
-			  .map((brick, index) => assignObjectColumn(columns, index, brick))
-			  .map((brick, index) => assignObjectIndex(index, brick));
+  resolveBricks({ bricks, columns }, newBricks = false) {
+    // Sort bricks and place them into their respectable columns
+    const sortedBricks = bricks
+      .map((brick, index) => assignObjectColumn(columns, index, brick))
+      .map((brick, index) => assignObjectIndex(index, brick));
 
-		// Do a difference check if these are new props
-		// to only resolve what is needed
-		const unresolvedBricks = (newBricks) ?
-			  differenceBy(sortedBricks, this.state._resolvedData, 'uri') :
-			  sortedBricks;
+    // Do a difference check if these are new props
+    // to only resolve what is needed
+    const unresolvedBricks = (newBricks) ?
+      differenceBy(sortedBricks, this.state._resolvedData, 'uri') :
+      sortedBricks;
 
-		unresolvedBricks
-			.map(brick => resolveImage(brick))
-			.map(resolveTask => resolveTask.fork(
-				(err) => console.warn('Image failed to load'),
-				(resolvedBrick) => {
-					this.setState(state => {
-						const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
-						console.log(sortedData);
-						return {
-							dataSource: state.dataSource.cloneWithRows(sortedData),
-							_sortedData: sortedData,
-							_resolvedData: [...state._resolvedData, resolvedBrick]
-						};
-					});;
-				}));
-	}
+    unresolvedBricks
+      .map(brick => resolveImage(brick))
+      .map(resolveTask => resolveTask.fork(
+        (err) => console.warn('Image failed to load'),
+        (resolvedBrick) => {
+          this.setState(state => {
+            const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
+
+            return {
+              dataSource: state.dataSource.cloneWithRows(sortedData),
+              _sortedData: sortedData,
+              _resolvedData: [...state._resolvedData, resolvedBrick]
+            };
+          });;
+        }));
+  }
 
   _setParentDimensions(event) {
     // Currently height isn't being utilized, but will pass through for future features
     const {width, height} = event.nativeEvent.layout;
+
     this.setState({
       dimensions: {
         width,
@@ -122,8 +122,8 @@ export default class Masonry extends Component {
 
   render() {
     return (
-  	<View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
- 	    <ListView
+    <View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
+       <ListView
          contentContainerStyle={styles.masonry__container}
          dataSource={this.state.dataSource}
          enableEmptySections
@@ -138,7 +138,7 @@ export default class Masonry extends Component {
              spacing={this.props.spacing}
              key={`RN-MASONRY-COLUMN-${rowID}`}/> }
        />
-  	</View>
+    </View>
     )
   }
 };
