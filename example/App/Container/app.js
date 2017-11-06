@@ -122,10 +122,11 @@ const addData = [
 export default class example extends Component {
   constructor() {
       super();
+
       this.state = {
-      columns: 2,
-      padding: 5,
-      data
+        columns: 2,
+        padding: 5,
+        data
       };
   }
 
