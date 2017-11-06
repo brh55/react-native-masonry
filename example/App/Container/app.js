@@ -18,7 +18,7 @@ import FastImage from 'react-native-fast-image';
 import Masonry from 'react-native-masonry';
 
 // list of images
-const data = [
+let data = [
   {
     data: {
       caption: 'Summer Recipies',
@@ -107,20 +107,40 @@ const data = [
   }
 ];
 
+const addData = [
+	{
+		uri: 'https://i.pinimg.com/736x/48/ee/51/48ee519a1768245ce273363f5bf05f30--kaylaitsines-dipping-sauces.jpg'
+	},
+	{
+		uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGYfU5N8lsJepQyoAigiijX8bcdpahei_XqRWBzZLbxcsuqtiH'
+	},
+	{
+		uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPL2GTXDuOzwuX5X7Mgwc3Vc9ZIhiMmZUhp3s1wg0oHPzSP7qC'
+	}
+];
+
 export default class example extends Component {
   constructor() {
-    super();
-    this.state = {
-      columns: 2,
-      padding: 5
-    };
+      super();
+      this.state = {
+		  columns: 2,
+		  padding: 5,
+		  data
+      };
   }
+
+	_addData = () => {
+		const appendedData = [...data, ...addData];
+		this.setState({
+			data: appendedData
+		});
+	}
 
   render() {
     return (
       <View style={{flex: 1, backgroundColor: '#f4f4f4'}}>
         <View style={[styles.center, styles.header]}>
-          <Text style={{ fontWeight: '800', fontSize: 20 }}>Masonry Demo</Text>
+			<Text style={{ fontWeight: '800', fontSize: 20 }}>Masonry Demo</Text>
         </View>
         <View style={[styles.center, styles.buttonGroup, { marginTop: 10, marginBottom: 25 }]}>
           <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 2 })}>
@@ -135,7 +155,12 @@ export default class example extends Component {
           <TouchableHighlight style={styles.button} onPress={() => this.setState({ columns: 9 })}>
             <Text>9 Columns</Text>
           </TouchableHighlight>
-        </View>
+		</View>
+	    <View style={styles.buttonGroup, {marginLeft: 4}}>
+		  <TouchableHighlight style={styles.button} onPress={this._addData}>
+            <Text>Push New Data</Text>
+		  </TouchableHighlight>
+		</View>
         <View style={[styles.center, styles.slider, { marginTop: 10, marginBottom: 25, flexDirection: 'column'}]}>
           <View style={{paddingLeft: 10}}>
             <Text>Dynamically adjust padding: {this.state.padding}</Text>
@@ -152,7 +177,7 @@ export default class example extends Component {
         <View style={{flex: 1, flexGrow: 10, padding: this.state.padding}}>
           <Masonry
             sorted
-            bricks={data}
+            bricks={this.state.data}
             columns={this.state.columns}
             customImageComponent={FastImage} />
         </View>
