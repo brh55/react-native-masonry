@@ -131,7 +131,6 @@ export default class example extends Component {
 
 	_addData = () => {
 		const appendedData = [...data, ...addData];
-		console.log(appendedData);
 		this.setState({
 			data: appendedData
 		});
