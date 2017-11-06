@@ -76,9 +76,6 @@ export default class Masonry extends Component {
       	});
       }
     } else {
-		console.log(this.state._sortedData);
-		console.log(this.state._resolvedData);
-		console.log(nextProps);
 		this.resolveBricks(nextProps, true);
     }
   }
