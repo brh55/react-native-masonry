@@ -39,7 +39,7 @@ export function _getImageTag (props, gutter = 0) {
 		  defaultProps={imageProps}
 		  injectant={props.customImageComponent}
 		  injectantProps={props.customImageProps} />
-	)
+	);
 }
 
 // _getTouchableUnit :: Image, Number -> TouchableTag
