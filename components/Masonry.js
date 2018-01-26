@@ -73,13 +73,13 @@ export default class Masonry extends Component {
 		// Sort bricks and place them into their respectable columns
 		const sortedBricks = bricks
 			  .map((brick, index) => assignObjectColumn(columns, index, brick))
-			.map((brick, index) => assignObjectIndex(index, brick));
+			  .map((brick, index) => assignObjectIndex(index, brick));
 
 		// Do a difference check if these are new props
 		// to only resolve what is needed
 		const unresolvedBricks = (partiallyCache) ?
-			differenceBy(sortedBricks, this.state._resolvedData, 'uri') :
-			sortedBricks;
+			  differenceBy(sortedBricks, this.state._resolvedData, 'uri') :
+			  sortedBricks;
 
 		unresolvedBricks
 			.map(brick => resolveImage(brick))
@@ -117,6 +117,8 @@ export default class Masonry extends Component {
 				contentContainerStyle={styles.masonry__container}
 				dataSource={this.state.dataSource}
 				enableEmptySections
+				scrollRenderAheadDistance={100}
+				removeClippedSubviews={false}
 				renderRow={(data, sectionId, rowID) =>
 						   <Column
 								 data={data}
@@ -126,10 +128,11 @@ export default class Masonry extends Component {
 								 customImageComponent={this.props.customImageComponent}
 								 customImageProps={this.props.customImageProps}
 								 spacing={this.props.spacing}
-							 key={`RN-MASONRY-COLUMN-${rowID}`}/> }
-						   />
+								 key={`RN-MASONRY-COLUMN-${rowID}`} />
+						   }
+			 />
 			</View>
-		)
+		);
 	}
 };
 
