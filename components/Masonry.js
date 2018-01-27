@@ -27,7 +27,8 @@ export default class Masonry extends Component {
 		imageContainerStyle: PropTypes.object,
 		customImageComponent: PropTypes.func,
 		customImageProps: PropTypes.object,
-		spacing: PropTypes.number
+		spacing: PropTypes.number,
+		priority: PropTypes.string
 	};
 
 	static defaultProps = {
@@ -35,22 +36,25 @@ export default class Masonry extends Component {
 		columns: 2,
 		sorted: false,
 		imageContainerStyle: {},
-		spacing: 1
+		spacing: 1,
+		priority: 'order'
 	};
 
 	constructor(props) {
 		super(props);
 		// Assuming users don't want duplicated images, if this is not the case we can always change the diff check
 		this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !containMatchingUris(r1, r2) });
+		const columnHeights = Array.apply(null, Array(props.columns)).map(Number.prototype.valueOf, 0);
 		this.state = {
 			dataSource: this.ds.cloneWithRows([]),
 			dimensions: {},
 			initialOrientation: true,
 			_sortedData: [],
-			_resolvedData: []
+			_resolvedData: [],
+			_columnHeights: columnHeights
 		};
 		// Assuming that rotation is binary (vertical|landscape)
-		Dimensions.addEventListener('change', (window) => this.setState(state => ({ initialOrientation: !state.initialOrientation })))
+		Dimensions.addEventListener('change', (window) => this.setState(state => ({ initialOrientation: !state.initialOrientation })));
 	}
 
 	componentDidMount() {
@@ -87,7 +91,7 @@ export default class Masonry extends Component {
 				(err) => console.warn('Image failed to load'),
 				(resolvedBrick) => {
 					this.setState(state => {
-						const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
+						const sortedData = this._insertIntoColumn(resolvedBrick, state._sortedData);
 
 						return {
 							dataSource: state.dataSource.cloneWithRows(sortedData),
@@ -109,6 +113,56 @@ export default class Masonry extends Component {
 			}
 		});
 	}
+
+	_determineColumnByHeight = () => {
+		const heights = this.state._columnHeights;
+		console.log(heights);
+		return heights.reduce((shortestIndex, currentValue, currentIndex) => {
+			const shortestValue = heights[shortestIndex];
+			return (shortestValue > currentValue) ? currentIndex : shortestIndex;
+		}, 0);
+	}
+
+	_insertIntoColumn = (resolvedBrick, dataSet) => {
+		let dataCopy = dataSet.slice();
+		const priority = this.props.priority;
+		let columnIndex;
+
+		switch (priority) {
+		case 'balance':
+			columnIndex = this._determineColumnByHeight();
+			const heightsCopy = this.state._columnHeights.slice();
+			const newColumnHeights = heightsCopy[columnIndex] + resolvedBrick.dimensions.height;
+			heightsCopy[columnIndex] = newColumnHeights;
+			this.setState({
+				_columnHeights: heightsCopy
+			});
+			break;
+		case 'order':
+		default:
+			columnIndex = resolvedBrick.column;
+			break;
+		}
+
+		const column = dataSet[columnIndex];
+		const sorted = this.props.sorted;
+
+		if (column) {
+			// Append to existing "row"/"column"
+			const bricks = [...column, resolvedBrick];
+			if (sorted) {
+				// Sort bricks according to the index of their original array position
+				bricks = bricks.sort((a, b) => (a.index < b.index) ? -1 : 1);
+			}
+			dataCopy[columnIndex] = bricks;
+		} else {
+			// Pass it as a new "row" for the data source
+			dataCopy = [...dataCopy, [resolvedBrick]];
+		}
+
+		return dataCopy;
+	};
+
 
 	render() {
 		return (
@@ -134,27 +188,4 @@ export default class Masonry extends Component {
 			</View>
 		);
 	}
-};
-
-// Returns a copy of the dataSet with resolvedBrick in correct place
-// (resolvedBrick, dataSetA, bool) -> dataSetB
-export function _insertIntoColumn (resolvedBrick, dataSet, sorted) {
-	let dataCopy = dataSet.slice();
-	const columnIndex = resolvedBrick.column;
-	const column = dataSet[columnIndex];
-
-	if (column) {
-		// Append to existing "row"/"column"
-		const bricks = [...column, resolvedBrick];
-		if (sorted) {
-			// Sort bricks according to the index of their original array position
-			bricks = bricks.sort((a, b) => (a.index < b.index) ? -1 : 1);
-		}
-		dataCopy[columnIndex] = bricks;
-	} else {
-		// Pass it as a new "row" for the data source
-		dataCopy = [...dataCopy, [resolvedBrick]];
-	}
-
-	return dataCopy;
 };
