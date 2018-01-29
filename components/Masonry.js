@@ -27,7 +27,8 @@ export default class Masonry extends Component {
 		imageContainerStyle: PropTypes.object,
 		customImageComponent: PropTypes.func,
 		customImageProps: PropTypes.object,
-		spacing: PropTypes.number
+		spacing: PropTypes.number,
+		refreshControl: PropTypes.element
 	};
 
 	static defaultProps = {
@@ -127,7 +128,8 @@ export default class Masonry extends Component {
 								 customImageProps={this.props.customImageProps}
 								 spacing={this.props.spacing}
 							 key={`RN-MASONRY-COLUMN-${rowID}`}/> }
-						   />
+				refreshControl={this.props.refreshControl}
+				/>
 			</View>
 		)
 	}
