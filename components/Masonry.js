@@ -16,6 +16,18 @@ export const assignObjectColumn = (nColumns, index, targetObject) => ({...target
 // Assigns an `index` property` from bricks={data}` for later sorting.
 export const assignObjectIndex = (index, targetObject) => ({...targetObject, ...{ index }});
 
+// findMinIndex :: [Numbers] -> Index
+export const findMinIndex = numbers => {
+	if (!Array.isArray(numbers)) {
+		return 0;
+	}
+
+	return numbers.reduce((lowestIndex, currentValue, currentIndex) => {
+		const minValue = numbers[lowestIndex];
+		return (minValue > currentValue) ? currentIndex : lowestIndex;
+	}, 0);
+}
+
 // containMatchingUris :: ([brick], [brick]) -> Bool
 const containMatchingUris = (r1, r2) => isEqual(r1.map(brick => brick.uri), r2.map(brick => brick.uri));
 
@@ -112,15 +124,6 @@ export default class Masonry extends Component {
 				height
 			}
 		});
-	}
-
-	_determineColumnByHeight = () => {
-		const heights = this.state._columnHeights;
-		console.log(heights);
-		return heights.reduce((shortestIndex, currentValue, currentIndex) => {
-			const shortestValue = heights[shortestIndex];
-			return (shortestValue > currentValue) ? currentIndex : shortestIndex;
-		}, 0);
 	}
 
 	_insertIntoColumn = (resolvedBrick, dataSet) => {

@@ -2,9 +2,10 @@ import { Text, View, TouchableHighlight } from 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import Masonry, {
-  _insertIntoColumn,
-  assignObjectColumn,
-  assignObjectIndex,
+	_insertIntoColumn,
+	assignObjectColumn,
+	assignObjectIndex,
+	findMinIndex,
 } from '../components/Masonry';
 import renderer from 'react-test-renderer';
 
@@ -52,4 +53,12 @@ test('PRIVATE FUNC: _insertIntoColumn sorts bricks according to index of bricks 
 
   //then
   expect(expectedSorted).toEqual(expectedData);
+});
+
+test('findShortestColumn returns shortest index', () => {
+	expect(findMinIndex([1,2,3,4,5,6])).toEqual(0);
+	expect(findMinIndex('nada')).toEqual(0);
+	expect(findMinIndex([100, 20000, 99, 44, 55])).toEqual(3);
+	expect(findMinIndex([99, 99, 99])).toEqual(0);
+	expect(findMinIndex([99, 8, 100, 1])).toEqual(3);
 });
