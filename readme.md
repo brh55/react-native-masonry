@@ -49,7 +49,7 @@
 | customImageComponent | `React.Component` | Use a custom component to be rendered for the Image. This will work properly, as long as the component follows the standard interface of the react-native image component.                      | n/a     |
 | customImageProps     | object            | Pass along additional properties to a `props.customImageComponent`.                                                                                                                             | n/a     |
 | spacing              | num               | Gutter size of the column. The spacing is a multiplier of 1% of the available view.                                                                                                             | 1       |
-
+| refreshControl       | `React.Component` | A component to be used as a refresh element for the Masonry component                                                                                                                           | n/a     |
 ### Brick Properties
 "Bricks" are the basic building block of the masonry and are passed into the props.bricks. They essentially represent the items within each column and require a `uri` property at a minimum. However, you can freely add additional properties to the `data` property if you need access to certain data within your `brick.onPress` handler and `footer/header` renderer. The following properties are available.
 
