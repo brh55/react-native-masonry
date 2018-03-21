@@ -71,32 +71,36 @@ export default class Masonry extends Component {
 	}
 
 	resolveBricks({ bricks, columns }, partiallyCache = false) {
-		// Sort bricks and place them into their respectable columns
-		const sortedBricks = bricks
-			  .map((brick, index) => assignObjectColumn(columns, index, brick))
-			.map((brick, index) => assignObjectIndex(index, brick));
+        this.setState({
+            _sortedData : []
+        }, () => {
+            // Sort bricks and place them into their respectable columns
+            const sortedBricks = bricks
+                .map((brick, index) => assignObjectColumn(columns, index, brick))
+                .map((brick, index) => assignObjectIndex(index, brick));
 
-		// Do a difference check if these are new props
-		// to only resolve what is needed
-		const unresolvedBricks = (partiallyCache) ?
-			differenceBy(sortedBricks, this.state._resolvedData, 'uri') :
-			sortedBricks;
+            // Do a difference check if these are new props
+            // to only resolve what is needed
+            const unresolvedBricks = (partiallyCache) ?
+                differenceBy(sortedBricks, this.state._resolvedData, 'uri') :
+                sortedBricks;
 
-		unresolvedBricks
-			.map(brick => resolveImage(brick))
-			.map(resolveTask => resolveTask.fork(
-				(err) => console.warn('Image failed to load'),
-				(resolvedBrick) => {
-					this.setState(state => {
-						const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
+            unresolvedBricks
+                .map(brick => resolveImage(brick))
+                .map(resolveTask => resolveTask.fork(
+                    (err) => console.warn('Image failed to load'),
+                    (resolvedBrick) => {
+                        this.setState(state => {
+                            const sortedData = _insertIntoColumn(resolvedBrick, state._sortedData, this.props.sorted);
 
-						return {
-							dataSource: state.dataSource.cloneWithRows(sortedData),
-							_sortedData: sortedData,
-							_resolvedData: [...state._resolvedData, resolvedBrick]
-						};
-					});;
-				}));
+                            return {
+                                dataSource: state.dataSource.cloneWithRows(sortedData),
+                                _sortedData: sortedData,
+                                _resolvedData: [...state._resolvedData, resolvedBrick]
+                            };
+                        });
+                    }));
+        });
 	}
 
 	_setParentDimensions(event) {
