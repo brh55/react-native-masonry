@@ -56,6 +56,7 @@ export default class Masonry extends Component {
 		super(props);
 		// Assuming users don't want duplicated images, if this is not the case we can always change the diff check
 		this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !containMatchingUris(r1, r2) });
+		// This creates an array of [1..n] with values of 0, each index represent a column within the masonry
 		const columnHeights = Array(props.columns).fill(0);
 		this.state = {
 			dataSource: this.ds.cloneWithRows([]),
@@ -133,7 +134,8 @@ export default class Masonry extends Component {
 
 		switch (priority) {
 		case 'balance':
-			columnIndex = this._determineColumnByHeight();
+			// Find the shortest
+			columnIndex = Math.min(...this.state._columnHeights);
 			const heightsCopy = this.state._columnHeights.slice();
 			const newColumnHeights = heightsCopy[columnIndex] + resolvedBrick.dimensions.height;
 			heightsCopy[columnIndex] = newColumnHeights;
