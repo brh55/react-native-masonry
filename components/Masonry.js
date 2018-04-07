@@ -56,7 +56,7 @@ export default class Masonry extends Component {
 		super(props);
 		// Assuming users don't want duplicated images, if this is not the case we can always change the diff check
 		this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !containMatchingUris(r1, r2) });
-		const columnHeights = Array.apply(null, Array(props.columns)).map(Number.prototype.valueOf, 0);
+		const columnHeights = Array(props.columns).fill(0);
 		this.state = {
 			dataSource: this.ds.cloneWithRows([]),
 			dimensions: {},
