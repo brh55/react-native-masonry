@@ -59,6 +59,13 @@ export default class Masonry extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		// Check if it's array and contains more than 1 item
+		if (!Array.isArray(nextProps.bricks) || nextProps.bricks.length === 0) {
+			this.setState(state => ({
+				dataSource: state.dataSource.cloneWithRows([])
+			}));
+		}
+
 		const sameData = containMatchingUris(this.props.bricks, nextProps.bricks);
 		const differentColumns = this.props.columns !== nextProps.columns;
 
