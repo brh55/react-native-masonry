@@ -83,6 +83,7 @@ export default class Masonry extends Component {
 		const brickDiff = differenceBy(nextProps.bricks, this.props.bricks, 'uri');
 		const appendedData = brickDiff.length !== nextProps.bricks.length;
 		const _uniqueCount = brickDiff.length + this.props.bricks.length;
+
 		// These intents would entail a complete re-render of the listview
 		if (differentColumns || differentPriority || !appendedData) {
 			this.setState(state => ({
@@ -183,7 +184,7 @@ export default class Masonry extends Component {
 		return dataCopy;
 	};
 
-	_delayCallEndReach = () => {
+  _delayCallEndReach = () => {
 		const sortedData = this.state._sortedData;
 		const sortedLength = sortedData.reduce((acc, cv) => cv.length + acc, 0);
 		// Limit the invokes to only when the masonry has
