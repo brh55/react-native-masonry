@@ -31,7 +31,7 @@ export default class Column extends Component {
 
 	componentWillMount() {
 		this.setState({
-			images: this._resizeImages(this.props.data, this.props.parentDimensions, this.props.columns),
+			images: this._resizeImages(this.props.data, this.props.parentDimensions, this.props.columns)
 		});
 	}
 

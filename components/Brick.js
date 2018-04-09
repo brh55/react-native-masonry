@@ -29,7 +29,7 @@ export function _getImageTag (props, gutter = 0) {
 			width: props.width,
 			height: props.height,
 			marginTop: gutter,
-			...props.imageContainerStyle,
+			...props.imageContainerStyle
 		}
 	};
 

@@ -139,8 +139,8 @@ export default class Masonry extends Component {
 		let columnIndex;
 
 		switch (priority) {
-			// Best effort to balance but sometimes state changes may have delays when performing calculation
 		case 'balance':
+			// Best effort to balance but sometimes state changes may have delays when performing calculation
 			columnIndex = findMinIndex(this.state._columnHeights);
 			const heightsCopy = this.state._columnHeights.slice();
 			const newColumnHeights = heightsCopy[columnIndex] + resolvedBrick.dimensions.height;
