@@ -24,8 +24,10 @@ exports[`SNAPSHOT: All functionality should match prev snapshot 1`] = `
     }
     enableEmptySections={true}
     refreshControl={undefined}
+    removeClippedSubviews={false}
     renderRow={[Function]}
     renderScrollComponent={[Function]}
+    scrollRenderAheadDistance={100}
   >
     <View />
   </RCTScrollView>
