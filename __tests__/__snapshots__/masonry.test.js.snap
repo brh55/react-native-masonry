@@ -23,6 +23,8 @@ exports[`SNAPSHOT: All functionality should match prev snapshot 1`] = `
       }
     }
     enableEmptySections={true}
+    onEndReached={[Function]}
+    onEndReachedThreshold={25}
     refreshControl={undefined}
     removeClippedSubviews={false}
     renderRow={[Function]}
