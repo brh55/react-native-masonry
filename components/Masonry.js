@@ -16,20 +16,11 @@ export const assignObjectColumn = (nColumns, index, targetObject) => ({...target
 // Assigns an `index` property` from bricks={data}` for later sorting.
 export const assignObjectIndex = (index, targetObject) => ({...targetObject, ...{ index }});
 
-// findMinIndex :: [Numbers] -> Index
-export const findMinIndex = numbers => {
-	if (!Array.isArray(numbers)) {
-		return 0;
-	}
-
-	return numbers.reduce((lowestIndex, currentValue, currentIndex) => {
-		const minValue = numbers[lowestIndex];
-		return (minValue > currentValue) ? currentIndex : lowestIndex;
-	}, 0);
-}
-
 // containMatchingUris :: ([brick], [brick]) -> Bool
 const containMatchingUris = (r1, r2) => isEqual(r1.map(brick => brick.uri), r2.map(brick => brick.uri));
+
+// generateColumnsHeight :: Number -> Array [...0]
+const generateColumnHeights = num => Array(num).fill(0);
 
 export default class Masonry extends Component {
 	static propTypes = {
@@ -57,7 +48,7 @@ export default class Masonry extends Component {
 		// Assuming users don't want duplicated images, if this is not the case we can always change the diff check
 		this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !containMatchingUris(r1, r2) });
 		// This creates an array of [1..n] with values of 0, each index represent a column within the masonry
-		const columnHeights = Array(props.columns).fill(0);
+		const columnHeights = generateColumnHeights(props.columns);
 		this.state = {
 			dataSource: this.ds.cloneWithRows([]),
 			dimensions: {},
@@ -75,43 +66,53 @@ export default class Masonry extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const sameData = containMatchingUris(this.props.bricks, nextProps.bricks);
 		const differentColumns = this.props.columns !== nextProps.columns;
+		const differentPriority = this.props.priority !== nextProps.priority;
+		// We use the difference in the passed in bricks to determine if user is appending or not
+		const brickDiff = differenceBy(nextProps.bricks, this.props.bricks, 'uri');
+		const appendedData = brickDiff.length !== nextProps.bricks.length;
 
-		if (sameData && !differentColumns) {
-			// Only re-render a portion of the bricks
-			this.resolveBricks(nextProps, true);
-		} else {
-			this.resolveBricks(nextProps);
+		// These intents would entail a complete re-render of the listview
+		if (differentColumns || differentPriority || !appendedData) {
+			this.setState(state => ({
+				_sortedData: [],
+				_resolvedData: [],
+				_columnHeights: generateColumnHeights(nextProps.columns)
+			}), this.resolveBricks(nextProps));
+		}
+
+		// We use the existing data and only resolve what is needed
+		if (appendedData) {
+			this.resolveBricks({...nextProps, bricks: brickDiff});
+			return;
 		}
 	}
 
-	resolveBricks({ bricks, columns }, partiallyCache = false) {
+	resolveBricks({ bricks, columns }) {
+		if (bricks.length === 0) {
+			// clear and re-render
+			this.setState(state => ({
+				dataSource: state.dataSource.cloneWithRows([])
+			}));
+		}
+
 		// Sort bricks and place them into their respectable columns
-		const sortedBricks = bricks
-			  .map((brick, index) => assignObjectColumn(columns, index, brick))
-			  .map((brick, index) => assignObjectIndex(index, brick));
-
-		// Do a difference check if these are new props
-		// to only resolve what is needed
-		const unresolvedBricks = (partiallyCache) ?
-			  differenceBy(sortedBricks, this.state._resolvedData, 'uri') :
-			  sortedBricks;
-
-		unresolvedBricks
+		// Issues arrise if state changes occur in the midst of a resolve
+		bricks
+			.map((brick, index) => assignObjectColumn(columns, index, brick))
+			.map((brick, index) => assignObjectIndex(index, brick))
 			.map(brick => resolveImage(brick))
 			.map(resolveTask => resolveTask.fork(
 				(err) => console.warn('Image failed to load'),
 				(resolvedBrick) => {
 					this.setState(state => {
 						const sortedData = this._insertIntoColumn(resolvedBrick, state._sortedData);
-
 						return {
 							dataSource: state.dataSource.cloneWithRows(sortedData),
 							_sortedData: sortedData,
 							_resolvedData: [...state._resolvedData, resolvedBrick]
 						};
-					});;
+					});
 				}));
 	}
 
@@ -133,9 +134,10 @@ export default class Masonry extends Component {
 		let columnIndex;
 
 		switch (priority) {
+		// Best effort to balance but sometimes state changes may have delays when performing calculation
 		case 'balance':
-			// Find the shortest
-			columnIndex = Math.min(...this.state._columnHeights);
+			columnIndex = this.state._columnHeights
+				.reduce((shortest, cValue, cIndex, cArray) => (cValue < cArray[shortest]) ? cIndex : shortest, 0);
 			const heightsCopy = this.state._columnHeights.slice();
 			const newColumnHeights = heightsCopy[columnIndex] + resolvedBrick.dimensions.height;
 			heightsCopy[columnIndex] = newColumnHeights;
