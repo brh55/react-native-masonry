@@ -36,7 +36,8 @@ export default class Masonry extends Component {
 		customImageProps: PropTypes.object,
 		spacing: PropTypes.number,
 		priority: PropTypes.string,
-		refreshControl: PropTypes.element
+		refreshControl: PropTypes.element,
+		onEndReached: PropTypes.func
 	};
 
 	static defaultProps = {
@@ -45,7 +46,9 @@ export default class Masonry extends Component {
 		sorted: false,
 		imageContainerStyle: {},
 		spacing: 1,
-		priority: 'order'
+		priority: 'order',
+		// no-op function
+		onEndReached: () => ({})
 	};
 
 	constructor(props) {
@@ -174,29 +177,35 @@ export default class Masonry extends Component {
 		return dataCopy;
 	};
 
+	_delayCallEndReach = () => {
+		if (this.state._resolvedData.length === this.props.bricks.length) {
+			this.props.onEndReached();
+		}
+	}
 
 	render() {
 		return (
-			<View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
-	<ListView
-	  contentContainerStyle={styles.masonry__container}
-	  dataSource={this.state.dataSource}
-	  enableEmptySections
-	  scrollRenderAheadDistance={100}
-	  removeClippedSubviews={false}
-	  renderRow={(data, sectionId, rowID) => (
-		  <Column
-			data={data}
-			columns={this.props.columns}
-			parentDimensions={this.state.dimensions}
-			imageContainerStyle={this.props.imageContainerStyle}
-			customImageComponent={this.props.customImageComponent}
-			customImageProps={this.props.customImageProps}
-			spacing={this.props.spacing}
-			key={`RN-MASONRY-COLUMN-${rowID}`} />
-	  )}
+		<View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
+		<ListView
+			contentContainerStyle={styles.masonry__container}
+			dataSource={this.state.dataSource}
+			enableEmptySections
+			scrollRenderAheadDistance={100}
+			removeClippedSubviews={false}
+			onEndReached={this._delayCallEndReach}
+			renderRow={(data, sectionId, rowID) => (
+			<Column
+				data={data}
+				columns={this.props.columns}
+				parentDimensions={this.state.dimensions}
+				imageContainerStyle={this.props.imageContainerStyle}
+				customImageComponent={this.props.customImageComponent}
+				customImageProps={this.props.customImageProps}
+				spacing={this.props.spacing}
+				key={`RN-MASONRY-COLUMN-${rowID}`} />
+			)}
 			refreshControl={this.props.refreshControl} />
-				</View>
+		</View>
 		);
 	}
 };

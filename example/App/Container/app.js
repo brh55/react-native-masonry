@@ -107,17 +107,27 @@ let data = [
 	}
 ];
 
-const addData = [
-	{
-		uri: 'https://i.pinimg.com/736x/48/ee/51/48ee519a1768245ce273363f5bf05f30--kaylaitsines-dipping-sauces.jpg'
-	},
-	{
-		uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGYfU5N8lsJepQyoAigiijX8bcdpahei_XqRWBzZLbxcsuqtiH'
-	},
-	{
-		uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPL2GTXDuOzwuX5X7Mgwc3Vc9ZIhiMmZUhp3s1wg0oHPzSP7qC'
-	}
-];
+const createBrick = uri => ({ uri });
+
+const data1 = [
+	'https://i.pinimg.com/736x/48/ee/51/48ee519a1768245ce273363f5bf05f30--kaylaitsines-dipping-sauces.jpg',
+	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGYfU5N8lsJepQyoAigiijX8bcdpahei_XqRWBzZLbxcsuqtiH',
+	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPL2GTXDuOzwuX5X7Mgwc3Vc9ZIhiMmZUhp3s1wg0oHPzSP7qC',
+].map(createBrick);
+
+const data2 = [
+	'https://i.pinimg.com/236x/ee/ea/61/eeea61b03a2de8216384ff1be9544b82--what-you-see-follow-me.jpg',
+	'https://i.pinimg.com/originals/a0/30/87/a03087e36c083a665cd3392d2d59cf0b.jpg',
+	'https://i.pinimg.com/736x/59/ae/8e/59ae8ee0e9e84aa234f80a345fa7f1c6--wedding-ceremony-wedding-menu.jpg'
+].map(createBrick);
+
+const data3 = [
+	'https://i.pinimg.com/736x/6a/53/0a/6a530a49f764ce51a9742162f46c1e05--soul-food-pinterest.jpg',
+	'https://i.pinimg.com/originals/a0/30/87/a03087e36c083a665cd3392d2d59cf0b.jpg',
+	'https://img.buzzfeed.com/buzzfeed-static/static/2018-02/19/3/asset/buzzfeed-prod-fastlane-03/sub-buzz-12799-1519030318-7.jpg'
+].map(createBrick);
+
+const appendData = [data1, data2, data3];
 
 export default class example extends Component {
 	constructor() {
@@ -126,15 +136,23 @@ export default class example extends Component {
 		this.state = {
 			columns: 2,
 			padding: 5,
-			data
+			data,
+			dataIndex: 0
 		};
 	}
 
 	_addData = () => {
-		const appendedData = [...data, ...addData];
-		this.setState({
-			data: appendedData
-		});
+		if (this.state.dataIndex < 3) {
+			this.setState(state => {
+				const addData = appendData[this.state.dataIndex];
+				const appendedData = [...state.data, ...addData];
+
+				return {
+					data: appendedData,
+					dataIndex: state.dataIndex + 1
+				};
+			});
+		}
 	}
 
 	render() {
@@ -181,10 +199,10 @@ export default class example extends Component {
 
 			  <View style={{flex: 1, flexGrow: 10, padding: this.state.padding}}>
 				<Masonry
-				  sorted
 				  bricks={this.state.data}
 				  columns={this.state.columns}
-				  priority='order'
+				  onEndReached={this._addData}
+				  priority='balance'
 				  customImageComponent={FastImage} />
 			  </View>
 			</View>
