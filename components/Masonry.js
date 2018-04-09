@@ -36,7 +36,9 @@ export default class Masonry extends Component {
 		customImageProps: PropTypes.object,
 		spacing: PropTypes.number,
 		priority: PropTypes.string,
-		refreshControl: PropTypes.element
+		refreshControl: PropTypes.element,
+		onEndReached: PropTypes.func,
+		onEndReachedThreshold: PropTypes.number
 	};
 
 	static defaultProps = {
@@ -45,7 +47,10 @@ export default class Masonry extends Component {
 		sorted: false,
 		imageContainerStyle: {},
 		spacing: 1,
-		priority: 'order'
+		priority: 'order',
+		// no-op function
+		onEndReached: () => ({}),
+		onEndReachedThreshold: 25
 	};
 
 	constructor(props) {
@@ -60,7 +65,8 @@ export default class Masonry extends Component {
 			initialOrientation: true,
 			_sortedData: [],
 			_resolvedData: [],
-			_columnHeights: columnHeights
+			_columnHeights: columnHeights,
+			_uniqueCount: props.bricks.length
 		};
 		// Assuming that rotation is binary (vertical|landscape)
 		Dimensions.addEventListener('change', (window) => this.setState(state => ({ initialOrientation: !state.initialOrientation })));
@@ -76,24 +82,28 @@ export default class Masonry extends Component {
 		// We use the difference in the passed in bricks to determine if user is appending or not
 		const brickDiff = differenceBy(nextProps.bricks, this.props.bricks, 'uri');
 		const appendedData = brickDiff.length !== nextProps.bricks.length;
+		const _uniqueCount = brickDiff.length + this.props.bricks.length;
 
 		// These intents would entail a complete re-render of the listview
 		if (differentColumns || differentPriority || !appendedData) {
 			this.setState(state => ({
 				_sortedData: [],
 				_resolvedData: [],
-				_columnHeights: generateColumnHeights(nextProps.columns)
+				_columnHeights: generateColumnHeights(nextProps.columns),
+				_uniqueCount
 			}), this.resolveBricks(nextProps));
 		}
 
 		// We use the existing data and only resolve what is needed
 		if (appendedData) {
-			this.resolveBricks({...nextProps, bricks: brickDiff});
-			return;
+			const offSet = this.props.bricks.length;
+			this.setState({
+				_uniqueCount
+			}, this.resolveBricks({...nextProps, bricks: brickDiff}, offSet));
 		}
 	}
 
-	resolveBricks({ bricks, columns }) {
+	resolveBricks({ bricks, columns }, offSet = 0) {
 		if (bricks.length === 0) {
 			// clear and re-render
 			this.setState(state => ({
@@ -105,7 +115,7 @@ export default class Masonry extends Component {
 		// Issues arrise if state changes occur in the midst of a resolve
 		bricks
 			.map((brick, index) => assignObjectColumn(columns, index, brick))
-			.map((brick, index) => assignObjectIndex(index, brick))
+			.map((brick, index) => assignObjectIndex(offSet + index, brick))
 			.map(brick => resolveImage(brick))
 			.map(resolveTask => resolveTask.fork(
 				(err) => console.warn('Image failed to load'),
@@ -174,29 +184,40 @@ export default class Masonry extends Component {
 		return dataCopy;
 	};
 
+  _delayCallEndReach = () => {
+		const sortedData = this.state._sortedData;
+		const sortedLength = sortedData.reduce((acc, cv) => cv.length + acc, 0);
+		// Limit the invokes to only when the masonry has
+		// fully loaded all of the content to ensure user fully reaches the end
+		if (sortedLength === this.state._uniqueCount) {
+			this.props.onEndReached();
+		}
+	}
 
 	render() {
 		return (
-			<View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
-	<ListView
-	  contentContainerStyle={styles.masonry__container}
-	  dataSource={this.state.dataSource}
-	  enableEmptySections
-	  scrollRenderAheadDistance={100}
-	  removeClippedSubviews={false}
-	  renderRow={(data, sectionId, rowID) => (
-		  <Column
-			data={data}
-			columns={this.props.columns}
-			parentDimensions={this.state.dimensions}
-			imageContainerStyle={this.props.imageContainerStyle}
-			customImageComponent={this.props.customImageComponent}
-			customImageProps={this.props.customImageProps}
-			spacing={this.props.spacing}
-			key={`RN-MASONRY-COLUMN-${rowID}`} />
-	  )}
+		<View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
+		<ListView
+			contentContainerStyle={styles.masonry__container}
+			dataSource={this.state.dataSource}
+			enableEmptySections
+			scrollRenderAheadDistance={100}
+			removeClippedSubviews={false}
+			onEndReached={this._delayCallEndReach}
+			onEndReachedThreshold={this.props.onEndReachedThreshold}
+			renderRow={(data, sectionId, rowID) => (
+			<Column
+				data={data}
+				columns={this.props.columns}
+				parentDimensions={this.state.dimensions}
+				imageContainerStyle={this.props.imageContainerStyle}
+				customImageComponent={this.props.customImageComponent}
+				customImageProps={this.props.customImageProps}
+				spacing={this.props.spacing}
+				key={`RN-MASONRY-COLUMN-${rowID}`} />
+			)}
 			refreshControl={this.props.refreshControl} />
-				</View>
+		</View>
 		);
 	}
 };
