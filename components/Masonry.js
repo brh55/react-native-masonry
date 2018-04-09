@@ -12,15 +12,19 @@ import styles from '../styles/main';
 // assignObjectColumn :: Number -> [Objects] -> [Objects]
 export const assignObjectColumn = (nColumns, index, targetObject) => ({...targetObject, ...{ column: index % nColumns }});
 
-// assignObjectIndex :: (Number, Object) -> Object
 // Assigns an `index` property` from bricks={data}` for later sorting.
+// assignObjectIndex :: (Number, Object) -> Object
 export const assignObjectIndex = (index, targetObject) => ({...targetObject, ...{ index }});
 
-// containMatchingUris :: ([brick], [brick]) -> Bool
-const containMatchingUris = (r1, r2) => isEqual(r1.map(brick => brick.uri), r2.map(brick => brick.uri));
+// findMinIndex :: [Numbers] -> Number
+export const findMinIndex = (srcArray) => srcArray.reduce((shortest, cValue, cIndex, cArray) => (cValue < cArray[shortest]) ? cIndex : shortest, 0);
 
+// containMatchingUris :: ([brick], [brick]) -> Bool
+export const containMatchingUris = (r1, r2) => isEqual(r1.map(brick => brick.uri), r2.map(brick => brick.uri));
+
+// Fills an array with 0's based on number count
 // generateColumnsHeight :: Number -> Array [...0]
-const generateColumnHeights = num => Array(num).fill(0);
+export const generateColumnHeights = count => Array(count).fill(0);
 
 export default class Masonry extends Component {
 	static propTypes = {
@@ -31,7 +35,7 @@ export default class Masonry extends Component {
 		customImageComponent: PropTypes.func,
 		customImageProps: PropTypes.object,
 		spacing: PropTypes.number,
-		priority: PropTypes.string
+		priority: PropTypes.string,
 		refreshControl: PropTypes.element
 	};
 
@@ -135,10 +139,9 @@ export default class Masonry extends Component {
 		let columnIndex;
 
 		switch (priority) {
-		// Best effort to balance but sometimes state changes may have delays when performing calculation
+			// Best effort to balance but sometimes state changes may have delays when performing calculation
 		case 'balance':
-			columnIndex = this.state._columnHeights
-				.reduce((shortest, cValue, cIndex, cArray) => (cValue < cArray[shortest]) ? cIndex : shortest, 0);
+			columnIndex = findMinIndex(this.state._columnHeights);
 			const heightsCopy = this.state._columnHeights.slice();
 			const newColumnHeights = heightsCopy[columnIndex] + resolvedBrick.dimensions.height;
 			heightsCopy[columnIndex] = newColumnHeights;
@@ -175,25 +178,25 @@ export default class Masonry extends Component {
 	render() {
 		return (
 			<View style={{flex: 1}} onLayout={(event) => this._setParentDimensions(event)}>
-			  <ListView
-				contentContainerStyle={styles.masonry__container}
-				dataSource={this.state.dataSource}
-				enableEmptySections
-				scrollRenderAheadDistance={100}
-				removeClippedSubviews={false}
-				renderRow={(data, sectionId, rowID) =>
-						   <Column
-								 data={data}
-								 columns={this.props.columns}
-								 parentDimensions={this.state.dimensions}
-								 imageContainerStyle={this.props.imageContainerStyle}
-								 customImageComponent={this.props.customImageComponent}
-								 customImageProps={this.props.customImageProps}
-								 spacing={this.props.spacing}
-							   key={`RN-MASONRY-COLUMN-${rowID}`}/> }
-				refreshControl={this.props.refreshControl}
-				/>
-			</View>
+	<ListView
+	  contentContainerStyle={styles.masonry__container}
+	  dataSource={this.state.dataSource}
+	  enableEmptySections
+	  scrollRenderAheadDistance={100}
+	  removeClippedSubviews={false}
+	  renderRow={(data, sectionId, rowID) => (
+		  <Column
+			data={data}
+			columns={this.props.columns}
+			parentDimensions={this.state.dimensions}
+			imageContainerStyle={this.props.imageContainerStyle}
+			customImageComponent={this.props.customImageComponent}
+			customImageProps={this.props.customImageProps}
+			spacing={this.props.spacing}
+			key={`RN-MASONRY-COLUMN-${rowID}`} />
+	  )}
+			refreshControl={this.props.refreshControl} />
+				</View>
 		);
 	}
 };
