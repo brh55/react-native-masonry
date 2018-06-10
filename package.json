@@ -1,6 +1,6 @@
 {
   "name": "react-native-masonry",
-  "version": "0.4.7",
+  "version": "0.5.0-alpha.1",
   "description": "A react-native component for a masonry layout",
   "main": "./components/Masonry.js",
   "scripts": {
