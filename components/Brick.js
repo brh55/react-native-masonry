@@ -24,6 +24,9 @@ export function _getImageTag (props, gutter = 0) {
 		source: {
 			uri: props.uri
 		},
+		data: {
+			...props.data
+		},
 		resizeMethod: 'auto',
 		style: {
 			width: props.width,
