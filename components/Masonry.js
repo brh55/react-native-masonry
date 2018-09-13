@@ -170,7 +170,7 @@ export default class Masonry extends Component {
 
 		if (column) {
 			// Append to existing "row"/"column"
-			const bricks = [...column, resolvedBrick];
+			let bricks = [...column, resolvedBrick];
 			if (sorted) {
 				// Sort bricks according to the index of their original array position
 				bricks = bricks.sort((a, b) => (a.index < b.index) ? -1 : 1);
