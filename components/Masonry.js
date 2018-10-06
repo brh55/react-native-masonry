@@ -28,7 +28,9 @@ export default class Masonry extends Component {
 		customImageComponent: PropTypes.func,
 		customImageProps: PropTypes.object,
 		spacing: PropTypes.number,
-		refreshControl: PropTypes.element
+		renderHeader: PropTypes.func,
+		renderFooter: PropTypes.func,
+		refreshControl: PropTypes.element,
 	};
 
 	static defaultProps = {
@@ -125,6 +127,8 @@ export default class Masonry extends Component {
 				contentContainerStyle={styles.masonry__container}
 				dataSource={this.state.dataSource}
 				enableEmptySections
+				renderHeader={this.props.renderHeader}
+				renderFooter={this.props.renderFooter}
 				renderRow={(data, sectionId, rowID) =>
 						   <Column
 								 data={data}
