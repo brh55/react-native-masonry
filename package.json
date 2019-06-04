@@ -1,6 +1,6 @@
 {
   "name": "react-native-masonry",
-  "version": "0.4.7",
+  "version": "0.5.0-alpha.4",
   "description": "A react-native component for a masonry layout",
   "main": "./components/Masonry.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "lodash.isequal": "^4.5.0",
     "opencollective": "^1.0.3",
     "prop-types": "^15.5.8",
-    "react-native-injectable-component": "^0.1.2"
+    "react-native-injectable-component": "^0.1.3"
   },
   "peerDependencies": {
     "react": "*",

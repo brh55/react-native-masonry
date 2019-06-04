@@ -32,7 +32,7 @@ export function _getImageTag (props, gutter = 0) {
 			width: props.width,
 			height: props.height,
 			marginTop: gutter,
-			...props.imageContainerStyle,
+			...props.imageContainerStyle
 		}
 	};
 
@@ -42,7 +42,7 @@ export function _getImageTag (props, gutter = 0) {
 		  defaultProps={imageProps}
 		  injectant={props.customImageComponent}
 		  injectantProps={props.customImageProps} />
-	)
+	);
 }
 
 // _getTouchableUnit :: Image, Number -> TouchableTag
