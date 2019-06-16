@@ -26,6 +26,10 @@ export const containMatchingUris = (r1, r2) => isEqual(r1.map(brick => brick.uri
 // generateColumnsHeight :: Number -> Array [...0]
 export const generateColumnHeights = count => Array(count).fill(0);
 
+const INVALID_COLUMN_WIDTH = -1;
+const PRIORITY_BALANCE = "balance";
+const PRIORITY_ORDER = "order";
+
 export default class Masonry extends Component {
 	static propTypes = {
 		bricks: PropTypes.array,
@@ -73,7 +77,15 @@ export default class Masonry extends Component {
 	}
 
 	componentDidMount() {
-		this.resolveBricks(this.props);
+		// If balance priority isn't enabled, resolve bricks on didMount
+		if (!this.isBalancingEnabled()) {
+			this.resolveBricks(this.props);
+		}
+	}
+
+	isBalancingEnabled() {
+		const { priority } = this.props;
+		return priority == PRIORITY_BALANCE;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -103,12 +115,25 @@ export default class Masonry extends Component {
 		}
 	}
 
-	resolveBricks({ bricks, columns }, offSet = 0) {
+	getColumnWidth(width, spacing, columns) {
+		const gutterBase = width / 100;
+		const gutterSize = gutterBase * spacing;
+		return (width / columns) - (gutterSize / 2);
+	}
+
+	resolveBricks({ bricks, columns, spacing, priority }, offSet = 0) {
 		if (bricks.length === 0) {
 			// clear and re-render
 			this.setState(state => ({
 				dataSource: state.dataSource.cloneWithRows([])
 			}));
+		}
+
+		// Calculate column width in case balance priority
+		let columnWidth = INVALID_COLUMN_WIDTH;
+		if (this.isBalancingEnabled()) {
+			const { dimensions: { width } } = this.state;
+			columnWidth = this.getColumnWidth(width, spacing, columns);
 		}
 
 		// Sort bricks and place them into their respectable columns
@@ -121,7 +146,7 @@ export default class Masonry extends Component {
 				(err) => console.warn('Image failed to load'),
 				(resolvedBrick) => {
 					this.setState(state => {
-						const sortedData = this._insertIntoColumn(resolvedBrick, state._sortedData);
+						const sortedData = this._insertIntoColumn(resolvedBrick, state._sortedData, state._columnHeights, columnWidth);
 						return {
 							dataSource: state.dataSource.cloneWithRows(sortedData),
 							_sortedData: sortedData,
@@ -140,26 +165,33 @@ export default class Masonry extends Component {
 				width,
 				height
 			}
+		}, () => {
+			// If balance priority is enabled, resolve bricks after onLayout
+			if (this.isBalancingEnabled()) {
+				this.resolveBricks(this.props);
+			}
 		});
 	}
 
-	_insertIntoColumn = (resolvedBrick, dataSet) => {
+	// Use columnHeights from state object provided by setState
+	_insertIntoColumn = (resolvedBrick, dataSet, _columnHeights, columnWidth) => {
 		let dataCopy = dataSet.slice();
 		const priority = this.props.priority;
 		let columnIndex;
 
 		switch (priority) {
-		case 'balance':
+		case PRIORITY_BALANCE:
+			// Column width only valid in case priority is balance
 			// Best effort to balance but sometimes state changes may have delays when performing calculation
-			columnIndex = findMinIndex(this.state._columnHeights);
-			const heightsCopy = this.state._columnHeights.slice();
-			const newColumnHeights = heightsCopy[columnIndex] + resolvedBrick.dimensions.height;
+			columnIndex = findMinIndex(_columnHeights);
+			const heightsCopy = _columnHeights.slice();
+			const newColumnHeights = heightsCopy[columnIndex] + (columnWidth * resolvedBrick.dimensions.height / resolvedBrick.dimensions.width);
 			heightsCopy[columnIndex] = newColumnHeights;
 			this.setState({
 				_columnHeights: heightsCopy
 			});
 			break;
-		case 'order':
+		case PRIORITY_ORDER:
 		default:
 			columnIndex = resolvedBrick.column;
 			break;
